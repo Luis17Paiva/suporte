@@ -1,0 +1,63 @@
+/* Importando a fonte */
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Aplicando o estilo do CSS pai */
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* ---Colors-----*/
+    --media-color: #695CFE;
+}
+
+body.dark {
+    --media-color: #FFF;
+}
+
+/* Estilos específicos para a página */
+.navbar {
+    background-color: var(--primary-color-light);
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.navbar-toggler-icon {
+    background-color: var(--text-color);
+}
+
+.navbar-nav .nav-link {
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 10px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--media-color);
+}
+
+.dropdown-menu {
+    background-color: var(--primary-color-light);
+}
+
+.dropdown-item {
+    color: var(--text-color);
+}
+
+.dropdown-item:hover {
+    background-color: var(--media-color);
+    color: var(--text-color);
+}
+
+.py-4 {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+}

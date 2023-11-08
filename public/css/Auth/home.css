@@ -1,0 +1,66 @@
+/* Importando a fonte */
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Aplicando o estilo do CSS pai */
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* ---Colors-----*/
+    --media-color: #695CFE;
+}
+
+body.dark {
+    --media-color: #FFF;
+}
+
+/* Estilos específicos para a máquina */
+.container {
+    margin: 20px;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: var(--primary-color-light);
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+    padding: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.alert {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: #D4EDDA;
+    color: #155724;
+    border: 1px solid #C3E6CB;
+}
+
+.alert-danger {
+    background-color: #F8D7DA;
+    color: #721C24;
+    border: 1px solid #F5C6CB;
+}
+
+.alert-info {
+    background-color: #D1ECF1;
+    color: #0C5460;
+    border: 1px solid #BDE8F6;
+}

@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Poppins:wght@300;400;500;600;700&display=swap');
+*{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{  
+     /* ---Colors-----*/
+    
+    --media-color: #695CFE; 
+   
+    /*===== transition ===== */
+}
+
+body.dark{
+    --media-color: #FFF; 
+}
+
+.box {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+}
+
+.box.dark {
+    background-color: #18191A;
+    color: #CCC;
+}
+
+.box .titulo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.box .button {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    height: 20px;
+    margin-left: 26px;
+    transition: var(--tran-03);
+}
+
+.box .button a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    background: var(--primary-color-light);
+    border-radius: 6px;
+    transition: var(--tran-05);
+    padding: 0px 3px;
+
+}
+
+.box .button a .icon {
+    color: var(--text-color);
+    font-size: 18px;
+}
+
+.box .button a .text {
+    margin-left: -20px;
+    font-size: 13px;
+}
+
+
+.box .button a:hover .icon,
+.box .button a:hover .text{
+
+    transition: var(--tran-05);
+    color: var(--media-color);
+}
+
+body.dark .box .button a:hover .icon,
+body.dark .box .button a:hover .text{
+
+    color: var(--media-color);
+}
+
+.box .button a {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+    transition: box-shadow 0.3s; 
+}
+
+.box .button a:hover {
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2); 
+}
+
+.box table {
+    width: 50%;
+    margin-top: 5px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 10px; 
+    overflow: hidden; 
+    margin: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: var(--tran-03);
+}
+
+
+
+.box th,
+.box td {
+    padding: 8px;
+    text-align: center;
+}
+
+.box td {
+    color: var(--text-color);
+}
+
+.box th {
+    background-color: var(--primary-color-light);
+    color: var(--text-color);
+}
+
+.box tbody tr:nth-child(even) {
+    background-color: var(--primary-color-light);
+}
+
+.box tbody tr:nth-child(odd) .button a {
+    background: var(--body-color);
+    
+}
+
+.box td:nth-child(4) {
+    display: flex;
+    justify-content: center;
+    
+}

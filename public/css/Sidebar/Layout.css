@@ -1,0 +1,77 @@
+/* Estilização do cabeçalho */
+header {
+    background-color: #175676;
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 0 auto;
+  }
+  
+  header .center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  header .logo img {
+    width: 150px;
+  }
+  
+  header .menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    margin-left: 20px;
+  }
+  
+  header .menu a:hover {
+    text-decoration: underline;
+  }
+  
+  header,
+  .status div {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  header:hover,
+  .status div:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .menu a:hover {
+    color: #fff;
+    background-color: #0077c2;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+/* Estilização do dark mode */
+body.dark-mode {
+  background-color: #1f1f1f;
+  color: #fff;
+}
+body.dark-mode header {
+  background-color: #0a0a0a;
+}
+body.dark-mode header .menu a {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .central-titulo .titulo {
+    font-size: 20px;
+  }
+  header .logo img {
+    width: 100px;
+  }
+  header .menu a {
+    font-size: 18px;
+  }
+  header .menu {
+    white-space: nowrap;
+  }
+  header .menu a {
+    white-space: normal;
+  }
+}
+

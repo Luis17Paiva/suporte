@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Poppins:wght@300;400;500;600;700&display=swap');
+*{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{  
+     /* ---Colors-----*/
+    
+    --media-color: #695CFE; 
+   
+    /*===== transition ===== */
+}
+
+.box {
+    margin: 30px;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: var(--body-color);
+}
+
+.box.dark {
+    background-color: #18191A;
+    color: #CCC;
+    --media-color: #FFF; 
+}
+
+.box .titulo{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    text-shadow:  1px 1px 2px rgba(0, 0, 0, 0.5);
+    transition: var(--tran-05);
+}
+
+
+.box .data {
+    max-width: 330px;
+    display: flex;
+    flex-wrap: wrap;
+    text-decoration: none;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background: var(--primary-color-light);
+    border-radius: 6px;
+    transition: var(--tran-05);
+    padding-bottom: 5px;
+    margin: 5px;
+    width: 25vw;
+    min-width: 150px;
+    align-items: center; 
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.box .data .text1 {
+    flex-wrap: wrap;
+    display: flex;
+    position: relative;
+    font-size: 16px;
+    align-items: center;
+    justify-content: center;
+}
+
+.box .data .gerar {
+
+    position: relative;
+    min-width: 135px;
+    width: 10vw;
+    height: 20%;
+    border-radius: 8px;
+}
+
+.box .data .dt{
+    display: flex;
+    position: relative;
+    min-width: 105px;
+    width: 10vw;
+    border-radius: 6px;
+    margin: 6px;
+}
+
+.box .data .gerar .text1{
+
+    white-space: nowrap;
+}
+
+
+.box .data .gerar:hover {
+
+    border-radius: 8px;
+    transform: scale(1.05);
+    transition: var(--tran-03);
+    background: var(--primary-color);
+}
+
+.box.dark .data .gerar:hover {
+
+    transform: scale(1.03);
+    color: var(--text-color);
+}
+
+.box .data .gerae .text1:hover{
+
+    color: var(--sidebar-color);
+}
+
+.box .result{
+    overflow: hidden;
+    align-items: flex-start;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box .result .tabela {
+    margin: 15px;
+    margin-top: 5px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 10px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: var(--tran-05);
+    min-width: 700px;
+    max-width: 750px;
+}
+
+.box th,
+.box td,
+.box tr{
+    padding: 5px;
+    text-align: center;
+    transition: var(--tran-05);
+}
+.box .tabela tr{
+    max-height: 20px !important;
+}
+.box th {
+    background-color: var(--primary-color-light);
+    color: var(--text-color);
+    font-size: 16px;
+    
+}
+
+.box td {
+    
+    color: var(--text-color);
+    max-height: 20p !important;
+    max-width: 20px;
+    font-size: 16px; 
+}
+
+
+.box tbody tr:nth-child(even) {
+    background-color: var(--primary-color-light);
+}
+
+
+
+.box .grafico{
+    display:flex !important;
+    width: 25vw;
+    height: 50%;
+    min-width: 300px;
+    max-width: 70%;
+    transition: var(--tran-05);
+}
+
+.apexcharts-legend-text{
+
+    color:var(--text-color) !important;
+}
+.apexcharts-slices{
+
+    transition: var(--tran-05) !important;
+}

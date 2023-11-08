@@ -1,0 +1,64 @@
+/* Estilização do formulário */
+form {
+    margin: 20px auto;
+    max-width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+h1 {
+    text-align: center !important;
+    margin-bottom: 20px;
+    margin-top: 0;
+    align-items: center;
+}
+
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+form input[type="number"],
+form input[type="text"],
+form input[type="checkbox"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+form button[type="submit"] {
+    background-color: #175676;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+
+form button[type="submit"]:hover {
+    background-color: #144e63;
+}
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content {
+    animation: fadeIn 2s ease;
+}

@@ -1,0 +1,67 @@
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+form {
+    width: 400px;
+    margin: 0 auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #175676;
+}
+
+input[type="number"],
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+input[type="checkbox"] {
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+button[type="submit"] {
+    background-color: #175676;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #144e63;
+}
+
+.error-message {
+    color: #ff0000;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .content {
+    animation: fadeIn 2s ease;
+  }

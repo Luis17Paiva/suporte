@@ -1,0 +1,11 @@
+composer.lock
+vendor
+.buildpath
+.project
+.settings
+.phpunit.result.cache
+build
+doc/examples/quickstart/log.log
+resources/php.ini
+*~
+*.bak
