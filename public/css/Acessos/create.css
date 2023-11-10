@@ -73,7 +73,7 @@ form button {
 }
 
 form button:hover,
-form .button a:hover .text {
+form .button a:hover .text1 {
     background-color: var(--media-color);
     color: var(--sidebar-color)
 }

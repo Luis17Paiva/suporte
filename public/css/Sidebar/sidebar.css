@@ -82,20 +82,11 @@ body.dark{
     padding: 10px 14px;
     background: var(--sidebar-color);
     transition: var(--tran-05);
-    scrollbar-width: none;
     z-index: 100;
     
 }
 
-.sidebar li{
-
-    height: 50px;
-    margin-top: 10px;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    transition: var(--tran-05);
-}
+.sidebar li{height: 50px;margin-top: 10px;list-style: none;display: flex;align-items: center;transition: var(--tran-05);}
 
 .sidebar li .icon{
     display: flex;
@@ -253,19 +244,7 @@ body.dark .sidebar li a:hover .text{
     transition: var(--tran-05);
 }
 
-.sidebar .menu-bar li.active::before{
-
-    content: "";
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 35%;
-    bottom: -40px;
-    right: 0;
-    box-shadow: 20px -20px 0 var(--body-color);
-    z-index: -1;
-    transition: var(--tran-05);
-}
+.sidebar .menu-bar li.active::before{content: "";position: absolute;width: 40px;height: 40px;border-radius: 35%;bottom: -40px;right: 0;box-shadow: 20px -20px 0 var(--body-color);z-index: -1;transition: var(--tran-05);}
 
 .sidebar .menu-bar li.active::after{
 
@@ -371,15 +350,7 @@ body.dark .switch::before{
     left: 25px;
 }
 
-.home{
-
-    position: relative;
-    height: 100vh;
-    left: 250px;
-    width: calc(100% - 250px);
-    background: var(--body-color);
-    transition: var(--tran-05);
-}
+.home{position: relative;height: 100vh;left: 250px;width: calc(100% - 250px);background: var(--body-color);transition: var(--tran-05);}
 
 .home .text{
     font-size: 30px;
@@ -405,7 +376,4 @@ body.dark .switch::before{
     }
 }
 
-.content {
-
-    animation: fadeIn 2s ease;
-}
+.content {animation: fadeIn 2s ease;/* display: flex; */}

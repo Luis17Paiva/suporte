@@ -57,9 +57,9 @@
                             </a>
                         </li>
                     @endif
-                    @if (Route::has('servidores'))
-                        <li class="nav-link @if (request()->is('servidores')) active @endif">
-                            <a href="#">
+                    @if (Route::has('acessos'))
+                        <li class="nav-link @if (request()->is('acessos')) active @endif">
+                            <a href="{{ route('acessos') }}">
                                 <i class='bx bxs-server icon'></i>
                                 <span class="text nav-text">Servidores</span>
                             </a>

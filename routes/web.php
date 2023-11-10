@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CentralController;
 use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\RelatorioController;
+use App\Http\Controllers\AcessoController;
 
 Route::get('/login', [LoginAndRegisterController::class, 'showLoginAndRegisterForm'])->name('login');
 Route::post('/login', [LoginAndRegisterController::class, 'login']);
@@ -32,8 +33,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/colaboradores/{id}/edit', [ColaboradorController::class, 'edit'])->name('colaboradores.edit');
     Route::put('/colaboradores/{id}', [ColaboradorController::class, 'update'])->name('colaboradores.update');
     Route::get('/colaboradores/create', [ColaboradorController::class, 'create'])->name('colaboradores.create');
-    Route::get('/colaboradores/store', [ColaboradorController::class, 'store'])->name('colaboradores.store.get');
-    Route::post('/colaboradores/store', [ColaboradorController::class, 'store'])->name('colaboradores.store.post');
+    Route::post('/colaboradores/store', [ColaboradorController::class, 'store'])->name('colaboradores.store');
     Route::post('/relatorios',[RelatorioController::class,'ShowRelatorio'])->name('relatorios.post');
     Route::get('/relatorios',[RelatorioController::class,'index'])->name('relatorios');
+    Route::get('/acessos',[AcessoController::class,'index'])->name('acessos');
+    Route::get('/acessos/create',[AcessoController::class,'create'])->name('acessos.create');
+    Route::post('/acessos',[AcessoController::class,'store'])->name('acessos.store');
+    Route::get('/acessos/{id}/edit', [AcessoController::class,'edit'])->name('acessos.edit');
+    Route::put('/acessos/{id}', [AcessoController::class,'update'])->name('acessos.update');
 });

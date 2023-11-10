@@ -1,146 +1,153 @@
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 2em;
-    font-weight: bold;
-  }
-  
-  form {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: flex;
-    margin-bottom: 10px;
-  }
-  
-  input[type="date"] {
-    padding: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  button#Gerar {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  button#Gerar:hover {
-    background-color: #388E3C;
-  }
-  
-  h2 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    font-size: 1.5em;
-  }
-  
- /*Estilo tabelas*/
-table {
-  border-collapse: collapse;
-
-  font-size: 16px;
-  max-width: 80%;
-  background-color: white;
-  overflow: hidden;
-  border-radius: 15px;
-  font-family: sans-serif;
-  white-space: nowrap;
-  text-align: left;
+/* Estilos gerais */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-#table_colaborador td:nth-child(1) {
+.box{
+  width: 100%;
+}
+
+
+/* Estilos do título */
+.titulo {
+  font-family: Arial, sans-serif;
+  font-size: 24px;
   font-weight: bold;
-  text-align: left;
+  color: var(--text-color);
+  text-align: center;
+  margin-bottom: 20px;
+
 }
 
-thead {
-  background-color: #175676;
-  color: white;
+/* Estilos do formulário */
+.data {
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 20px;
+  display:flex;
+  flex-wrap: wrap;
+}
+
+.data-input {
+  flex-direction: column;
+  margin: 8px;
+}
+
+.text1 {
+  font-weight: normal;
+  color: var(--text-color);
+  margin-bottom: 5px;
+}
+
+.text2 {
+  color: var(--text-color);
+  font-size: calc(8px + 0.5vw);
+}
+
+.dt {
+  width: 150px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: calc(2px + 1vw);
+}
+
+.gerar {
+  width: 150px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background-color:var(--sidebar-color);
+  color: var(--sidebar-color);
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gerar:hover,
+.gerar:hover .text1 {
+  background-color: var(--primary-color);
+  color: var(--sidebar-color);
+}
+
+
+/* Estilos da seção de resultados */
+.result {
+  flex-wrap: wrap;
+  width: 100%;
+  height: auto;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Estilos da lista */
+.lista {
+  flex-wrap: wrap;
+  list-style: none;
+  width: 93%;
+  border-collapse: collapse;
+  margin-left: 10px;
+}
+
+.lista li {
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: var(--sidebar-color);
+  border-radius: 10px;
+  margin: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Estilos para o conteúdo principal */
+.content {
+
+  transition: var(--tran-05);
+  width: 100%;
+  margin-left: 12px;
+}
+
+
+.box table {
+  width: 93%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-radius: 10px; 
+  overflow: hidden; 
+  margin: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: var(--tran-03);
+  margin-right: 20px;
 }
 
 th,
 td {
-  padding: 12px 15px;
-  text-align: right;
-  border-bottom: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
 }
 
-th:first-child,
-td:first-child {
-  padding-left: 20px;
+td {
+  color: var(--text-color);
+  font-size: calc(8px + 0.5vw);;
 }
 
-th:last-child,
-td:last-child {
-  padding-right: 20px;
-}
-
-tbody tr:hover {
-  background-color: #f5f5f5;
+th {
+  background-color: var(--primary-color-light);
+  color: var(--text-color);
+  font-size: calc(10px + 0.5vw);
 }
 
 tbody tr:nth-child(even) {
-  background-color: #f8f8f8;
-}
-  
-.content {
-    text-align: left;
-    align-content: left;
-    animation: fadeIn 2s ease;
-    border-radius: 10px;
-  }
-  
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .table-wrapper {
-    text-align: left;
-    align-content: left;
-    width: 100%;
-  }
-  
-  .table-wrapper table {
-    border-collapse: collapse;
-    font-size: 16px;
-    width: 100%;
-    max-width: 50%;
-    background-color: white;
-    overflow: hidden;
-    border-radius: 10px;
-    font-family: sans-serif;
-    white-space: nowrap;
-  }
-
-  .m {
-    display: flex;
-    flex-direction: row;
-    margin: 10px;
-    padding: 10px;
-    gap: 50px;
-  }
-
-  .m .tabela {
-    justify-content:left;
-  }
-
-.m .grafico {
-  justify-content:right;
-  align-items: end;
+  background-color: var(--primary-color-light);
 }
 
-.grafico {
-  width: 500px !important;
-  height: 500px !important;
+tbody tr:nth-child(odd) .button a {
+  background: var(--body-color);
+}
 
+td:nth-child(4) {
+  display: flex;
+  justify-content: center;
 }
