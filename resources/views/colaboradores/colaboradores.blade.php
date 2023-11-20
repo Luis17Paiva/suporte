@@ -2,7 +2,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/colaboradores/colaboradores.js') }}"></script>
 <link href="{{ asset('css/Colaboradores/colaboradores.css') }}" rel="stylesheet">
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 
 @section('content')
     <title>Colaboradores</title>

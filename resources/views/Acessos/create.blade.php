@@ -1,6 +1,5 @@
 @extends('Sidebar/sidebar')
 <link href="{{ asset('css/Acessos/create.css') }}" rel="stylesheet">
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 @section('content')
     <title>Adicionar acesso</title>
     <div class="box">

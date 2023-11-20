@@ -105,7 +105,7 @@ class LoginAndRegisterController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/relatorios');
+        return redirect('/login');
     }
 
     public function register(Request $request)

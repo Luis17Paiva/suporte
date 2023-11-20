@@ -40,5 +40,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/acessos/create',[AcessoController::class,'create'])->name('acessos.create');
     Route::post('/acessos',[AcessoController::class,'store'])->name('acessos.store');
     Route::get('/acessos/{id}/edit', [AcessoController::class,'edit'])->name('acessos.edit');
-    Route::put('/acessos/{id}', [AcessoController::class,'update'])->name('acessos.update');
+    Route::post('/acessos/{id}', [AcessoController::class,'update'])->name('acessos.update');
+    Route::get('/acessos/{acessoId}/historico', [AcessoController::class,'filtrarPorData']);
+    Route::post('/acessos/{acessoId}/historico', 'AcessoController@filtrarPorData');
+    Route::post('/acessos/historico', [AcessoController::class,'filtrarPorData'])->name('acessos.hist.post');
+
 });

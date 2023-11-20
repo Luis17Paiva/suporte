@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Acesso;
+use App\Models\HistoricoAcesso;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AcessoController extends Controller
 {
@@ -48,15 +50,41 @@ class AcessoController extends Controller
         $acesso->senha = $request->input('senha');
         $acesso->save();
 
-        return redirect()->route('Acessos.acesso');
+        return redirect()->route('acessos');
+    }
+
+    public function filtrarPorData(Request $request)
+    {
+        $acessoId = $request->input('acessoId');
+        $dataInicial = $request->input('data_inicial');
+        $dataFinal = $request->input('data_final');
+
+        $historicoAcessos = Acesso::where('acesso_id', $acessoId)
+            ->whereDate('data_acesso', '>=', $dataInicial)
+            ->whereDate('data_acesso', '<=', $dataFinal)
+            ->get();
+
+        
+        if ($historicoAcessos->isEmpty()) {
+            return response()->json([
+                'message' => 'Nenhum histórico de acesso encontrado para este ID de acesso e intervalo de datas.',
+            ], 404);
+        }
+
+        $data = array( 
+            'historicoAcessos' => $historicoAcessos
+        );
+
+        return json_encode($data);
+      
     }
 
     public function destroy($id)
     {
         $acesso = Acesso::findOrFail($id);
-        $acesso->excluido  = true;
+        $acesso->excluido = true;
         $acesso->save();
 
-        return redirect()->route('Acessos.acesso');
+        return redirect()->route('acessos');
     }
 }
