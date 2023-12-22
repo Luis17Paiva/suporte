@@ -53,7 +53,7 @@ class AcessoController extends Controller
         return redirect()->route('acessos');
     }
 
-    public function filtrarPorData(Request $request)
+    public function ShowHist(Request $request)
     {
         $acessoId = $request->input('acessoId');
         $dataInicial = $request->input('data_inicial');

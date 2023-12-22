@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    closeModalConfirmButtons.forEach((button) => {
+    closeModalAcessoButtons.forEach((button) => {
         button.addEventListener("click", () => {
             closeModal();
             fadeElement.classList.add('hide');
@@ -95,26 +95,33 @@ document.addEventListener("DOMContentLoaded", function () {
     });*/
 
 
-    $('#form-filtrar-hist').submit(function(e) {
-        e.preventDefault();
+    function enviarRequisicao(acessoId) {
+        const form = document.getElementById(`form-filtrar-hist-${acessoId}`);
+        const dataInicial = form.querySelector('input[name="data_inicial"]').value;
+        const dataFinal = form.querySelector('input[name="data_final"]').value;
     
-        var form = $(this);
-        var acessoId = form.data('acesso-id');
-        var dataInicial = form.find('input[name="data_inicial"]').val();
-        var dataFinal = form.find('input[name="data_final"]').val();
-    
-        $.ajax({
-          url: '/acessos/' + acessoId + '/historico',
-          method: 'GET',
-          data: {
+        const dadosParaEnviar = {
             data_inicial: dataInicial,
             data_final: dataFinal
-          },
-          success: function(response) {
-            // Update the modal content with the filtered data
-            $('#modal-hist-{{ acessoId }}').find('.modal-body').html(response);
-          }
+        };
+    
+        fetch(`'/acessos/ + ${acessoId} + /historico`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Adicione quaisquer outros cabeçalhos necessários
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify(dadosParaEnviar)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Faça algo com a resposta do servidor
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Erro na requisição:', error);
         });
-      });
+    }
 
 });
