@@ -99,8 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
         const startDate = $(this).find('#data_inicio').val();
         const endDate = $(this).find('#data_fim').val();
-        const acessoId = $(this).data('acesso-id'); // Usando $(this) para referenciar o formulário atual
-        console.log(acessoId);
+        const acessoId = $(this).data('acesso-id'); 
     
         axios.get('/suporte/public/historico-acessos/' + acessoId, {
             params: {
@@ -111,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => {
             const data = response.data;
     
-            const dataDisplay = $(this).siblings('#dataDisplay'); // Usando siblings para encontrar o elemento #dataDisplay relacionado
+            const dataDisplay = $(this).siblings('#dataDisplay'); 
     
             // Limpar exibição de dados existente
             dataDisplay.empty();
@@ -130,7 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
     
                 // Iterar sobre cada registro no JSON
                 data.forEach(record => {
-                    // Criar uma linha (<tr>) para cada registro
                     const tableRow = $('<tr>');
     
                     // Adicionar informações do registro às células da linha
