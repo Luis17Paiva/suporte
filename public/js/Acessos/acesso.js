@@ -61,8 +61,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const targetModalId = event.currentTarget.getAttribute("data-target");
             openModalAcesso(targetModalId);
+
+            const acessoId = targetModalId.split('-')[2];
+            registrarAcesso(acessoId);
         });
     });
+
+    // Função para fazer a requisição POST para registrar o acesso
+    const registrarAcesso = (acessoId) => {
+        axios.post(`/suporte/public/registrar-acesso/${acessoId}`)
+            .then(response => {
+                console.log(response.data.message);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
 
     openModalHistButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
@@ -94,62 +108,62 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    $('.form-filtrar-hist').submit(function(event) {
+    $('.form-filtrar-hist').submit(function (event) {
         event.preventDefault(); // Evitar envio padrão do formulário
-    
+
         const startDate = $(this).find('#data_inicio').val();
         const endDate = $(this).find('#data_fim').val();
-        const acessoId = $(this).data('acesso-id'); 
-    
+        const acessoId = $(this).data('acesso-id');
+
         axios.get('/suporte/public/historico-acessos/' + acessoId, {
             params: {
                 startDate: startDate,
                 endDate: endDate
             }
         })
-        .then(response => {
-            const data = response.data;
-    
-            const dataDisplay = $(this).siblings('#dataDisplay'); 
-    
-            // Limpar exibição de dados existente
-            dataDisplay.empty();
-    
-            // Verificar se 'data' é uma matriz não nula e não indefinida
-            if (Array.isArray(data) && data !== null && data !== undefined) {
-                // Criar uma tabela para armazenar os registros
-                const table = $('<table>').addClass('table'); // Adicionei a classe 'table' do Bootstrap para estilização básica
-    
-                // Cabeçalho da tabela
-                const tableHeader = $('<thead>').append($('<tr>').append($('<th>').text('Usuário'), $('<th>').text('Data de Acesso')));
-                table.append(tableHeader);
-    
-                // Corpo da tabela
-                const tableBody = $('<tbody>');
-    
-                // Iterar sobre cada registro no JSON
-                data.forEach(record => {
-                    const tableRow = $('<tr>');
-    
-                    // Adicionar informações do registro às células da linha
-                    tableRow.append($('<td>').text(record.usuario), $('<td>').text(record.data_acesso));
-    
-                    // Adicionar a linha ao corpo da tabela
-                    tableBody.append(tableRow);
-                });
-    
-                // Adicionar o corpo da tabela à tabela completa
-                table.append(tableBody);
-    
-                // Adicionar a tabela completa à exibição de dados
-                dataDisplay.append(table);
-            } else {
-                dataDisplay.append('<div class="text1">Nenhum registro encontrado</div>');
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        });
+            .then(response => {
+                const data = response.data;
+
+                const dataDisplay = $(this).siblings('#dataDisplay');
+
+                // Limpar exibição de dados existente
+                dataDisplay.empty();
+
+                // Verificar se 'data' é uma matriz não nula e não indefinida
+                if (Array.isArray(data) && data !== null && data !== undefined) {
+                    // Criar uma tabela para armazenar os registros
+                    const table = $('<table>').addClass('table'); // Adicionei a classe 'table' do Bootstrap para estilização básica
+
+                    // Cabeçalho da tabela
+                    const tableHeader = $('<thead>').append($('<tr>').append($('<th>').text('Usuário'), $('<th>').text('Data de Acesso')));
+                    table.append(tableHeader);
+
+                    // Corpo da tabela
+                    const tableBody = $('<tbody>');
+
+                    // Iterar sobre cada registro no JSON
+                    data.forEach(record => {
+                        const tableRow = $('<tr>');
+
+                        // Adicionar informações do registro às células da linha
+                        tableRow.append($('<td>').text(record.usuario), $('<td>').text(record.data_acesso));
+
+                        // Adicionar a linha ao corpo da tabela
+                        tableBody.append(tableRow);
+                    });
+
+                    // Adicionar o corpo da tabela à tabela completa
+                    table.append(tableBody);
+
+                    // Adicionar a tabela completa à exibição de dados
+                    dataDisplay.append(table);
+                } else {
+                    dataDisplay.append('<div class="text1">Nenhum registro encontrado</div>');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
     });
-    
+
 });

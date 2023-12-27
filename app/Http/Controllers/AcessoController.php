@@ -58,23 +58,38 @@ class AcessoController extends Controller
     {
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
-    
+
         // Verificar se o acessoId é um número inteiro válido
         if (!is_numeric($acessoId) || $acessoId <= 0) {
             return response()->json(['message' => 'Acesso ID inválido']);
         }
-    
+
         $data = DB::table('historico_acessos')
-            ->where('acesso_id', $acessoId) // Substitua 'acesso_id' pelo nome correto da coluna no seu banco de dados
+            ->where('acesso_id', $acessoId) 
             ->whereBetween('data_acesso', [$startDate, $endDate])
             ->get()
             ->toArray(); // Convertendo a coleção para array
-    
+
         if (empty($data)) {
             return response()->json(['message' => 'Nenhum dado encontrado']);
         } else {
             return response()->json($data);
         }
+    }
+
+    public function registrarAcesso(Request $request, $acessoId)
+    {
+        $usuario = $request->user()->name; 
+        $dataAcesso = now(); 
+
+        // Insere os dados na tabela de historico_acessos
+        DB::table('historico_acessos')->insert([
+            'usuario' => $usuario,
+            'data_acesso' => $dataAcesso,
+            'acesso_id' => $acessoId,
+        ]);
+
+        return response()->json(['message' => 'Acesso registrado com sucesso']);
     }
 
     public function destroy($id)

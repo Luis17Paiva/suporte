@@ -42,8 +42,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/acessos/{id}/edit', [AcessoController::class,'edit'])->name('acessos.edit');
     Route::post('/acessos/{id}', [AcessoController::class,'update'])->name('acessos.update');
     Route::get('/historico-acessos/{acessoId}', [AcessoController::class,'HistoricoAcessos']);
-
-    Route::post('/acessos/{acessoId}/historico', [AcessoController::class,'ShowHist']);
-    Route::post('/acessos/historico', [AcessoController::class,'ShowHist'])->name('acessos.hist.post');
-
+    Route::post('/registrar-acesso/{acessoId}', [AcessoController::class, 'registrarAcesso']);
 });
