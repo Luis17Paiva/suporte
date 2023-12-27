@@ -86,42 +86,72 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    /*closeModalHistButtons.forEach((button) => {
+    closeModalHistButtons.forEach((button) => {
         button.addEventListener("click", () => {
             closeModal();
             fadeElement.classList.add('hide');
 
         });
-    });*/
+    });
 
-
-    function enviarRequisicao(acessoId) {
-        const form = document.getElementById(`form-filtrar-hist-${acessoId}`);
-        const dataInicial = form.querySelector('input[name="data_inicial"]').value;
-        const dataFinal = form.querySelector('input[name="data_final"]').value;
+    $('.form-filtrar-hist').submit(function(event) {
+        event.preventDefault(); // Evitar envio padrão do formulário
     
-        const dadosParaEnviar = {
-            data_inicial: dataInicial,
-            data_final: dataFinal
-        };
+        const startDate = $(this).find('#data_inicio').val();
+        const endDate = $(this).find('#data_fim').val();
+        const acessoId = $(this).data('acesso-id'); // Usando $(this) para referenciar o formulário atual
+        console.log(acessoId);
     
-        fetch(`'/acessos/ + ${acessoId} + /historico`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // Adicione quaisquer outros cabeçalhos necessários
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify(dadosParaEnviar)
+        axios.get('/suporte/public/historico-acessos/' + acessoId, {
+            params: {
+                startDate: startDate,
+                endDate: endDate
+            }
         })
-        .then(response => response.json())
-        .then(data => {
-            // Faça algo com a resposta do servidor
-            console.log(data);
+        .then(response => {
+            const data = response.data;
+    
+            const dataDisplay = $(this).siblings('#dataDisplay'); // Usando siblings para encontrar o elemento #dataDisplay relacionado
+    
+            // Limpar exibição de dados existente
+            dataDisplay.empty();
+    
+            // Verificar se 'data' é uma matriz não nula e não indefinida
+            if (Array.isArray(data) && data !== null && data !== undefined) {
+                // Criar uma tabela para armazenar os registros
+                const table = $('<table>').addClass('table'); // Adicionei a classe 'table' do Bootstrap para estilização básica
+    
+                // Cabeçalho da tabela
+                const tableHeader = $('<thead>').append($('<tr>').append($('<th>').text('Usuário'), $('<th>').text('Data de Acesso')));
+                table.append(tableHeader);
+    
+                // Corpo da tabela
+                const tableBody = $('<tbody>');
+    
+                // Iterar sobre cada registro no JSON
+                data.forEach(record => {
+                    // Criar uma linha (<tr>) para cada registro
+                    const tableRow = $('<tr>');
+    
+                    // Adicionar informações do registro às células da linha
+                    tableRow.append($('<td>').text(record.usuario), $('<td>').text(record.data_acesso));
+    
+                    // Adicionar a linha ao corpo da tabela
+                    tableBody.append(tableRow);
+                });
+    
+                // Adicionar o corpo da tabela à tabela completa
+                table.append(tableBody);
+    
+                // Adicionar a tabela completa à exibição de dados
+                dataDisplay.append(table);
+            } else {
+                dataDisplay.append('<div class="text1">Nenhum registro encontrado</div>');
+            }
         })
         .catch(error => {
-            console.error('Erro na requisição:', error);
+            console.error(error);
         });
-    }
-
+    });
+    
 });

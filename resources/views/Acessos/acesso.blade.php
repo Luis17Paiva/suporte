@@ -56,12 +56,16 @@
                             </div>
                         </div>
                         <div class="modal-body">
-                            <p>Você declara estar ciente da Lei Geral de Proteção de Dados (LGPD), que regula o tratamento de dados pessoais
+                            <p>Você declara estar ciente da Lei Geral de Proteção de Dados (LGPD), que regula o tratamento
+                                de dados pessoais
                                 no Brasil.</p>
-                            <p>Você declara que tem a competência para acessar os dados pessoais dos clientes da empresa.</p>
-                            <p>Você compromete-se a utilizar os dados pessoais dos clientes apenas para os fins autorizados pela LGPD.</p>
+                            <p>Você declara que tem a competência para acessar os dados pessoais dos clientes da empresa.
+                            </p>
+                            <p>Você compromete-se a utilizar os dados pessoais dos clientes apenas para os fins autorizados
+                                pela LGPD.</p>
                             <p>Você compromete-se a manter a confidencialidade dos dados pessoais dos clientes.</p>
-                            <p>Você compromete-se a informar à empresa "{{ $acesso->empresa }}" caso ocorra qualquer incidente de segurança
+                            <p>Você compromete-se a informar à empresa "{{ $acesso->empresa }}" caso ocorra qualquer
+                                incidente de segurança
                                 que possa comprometer os dados pessoais dos clientes.</p>
                             <p>Lei nº 13.709, de 14 de agosto de 2018.</p>
                             <div class="button m">
@@ -90,16 +94,20 @@
                             </div>
                         </div>
                         <div class="modal-body">
-                            <form id="form-filtrar-hist" data-acesso-id="{{ $acesso->id }}">
+                            <form class="form-filtrar-hist" data-acesso-id="{{ $acesso->id }}">
                                 @csrf
-                                <label for="data_inicial">Data Inicial:</label>
-                                <input type="date" name="data_inicial" required>
-
-                                <label for="data_final">Data Final:</label>
-                                <input type="date" name="data_final" required>
-
-                                <button type="submit">Gerar</button>
+                                <div class="data-input">
+                                    <label for="data_inicio">Data Inicial:</label>
+                                    <input id="data_inicio" type="date" name="data_inicio" required>
+                                </div>
+                                <div class="data-input">
+                                    <label for="data_fim ">Data Final:</label>
+                                    <input id="data_fim" type="date" name="data_fim" required>
+                                </div>
+                                <button id=histbutton type="submit">Gerar</button>
+                                
                             </form>
+                            <div id="dataDisplay"></div>
                         </div>
                     </div>
                 @endforeach
@@ -108,5 +116,4 @@
     </div>
     <!-- Modal -->
     <div id="fade" class="hide"></div>
-    
 @endsection

@@ -71,9 +71,10 @@
     background-color: var(--primary-color);
     padding: 10px 20px;
     border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0.1, 0.2);
     cursor: pointer;
 }
+
 
 .button.m a:hover,
 .button.m a:hover .text1
@@ -181,3 +182,63 @@ pointer-events: all;
     pointer-events: none;
     opacity: 0;
 }
+
+.form-filtrar-hist{
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-top: 5px;
+}
+
+
+.form-filtrar-hist button {
+    margin-top: 10px; /* Adiciona margem na parte inferior dos rótulos */
+    display: block; /* Faz com que os rótulos ocupem a largura total disponível */
+    padding: 5px;
+    background: var(--primary-color);
+    border-radius: 5px;
+    color: white;
+}
+
+.table {
+    width: 93%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 10px; 
+    overflow: hidden; 
+    margin: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: var(--tran-03);
+    margin-right: 20px;
+  }
+  
+  th,
+  td {
+    padding: 8px;
+    text-align: center;
+  }
+  
+  td {
+    color: var(--text-color);
+    font-size: calc(8px + 0.5vw);;
+  }
+  
+  th {
+    background-color: var(--primary-color-light);
+    color: var(--text-color);
+    font-size: calc(10px + 0.5vw);
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: var(--primary-color-light);
+  }
+  
+  tbody tr:nth-child(odd) .button a {
+    background: var(--body-color);
+  }
+  
+  td:nth-child(4) {
+    display: flex;
+    justify-content: center;
+  }

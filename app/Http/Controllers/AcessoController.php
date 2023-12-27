@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Acesso;
+use Illuminate\Support\Facades\DB;
 use App\Models\HistoricoAcesso;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -53,30 +54,27 @@ class AcessoController extends Controller
         return redirect()->route('acessos');
     }
 
-    public function ShowHist(Request $request)
+    public function HistoricoAcessos(Request $request, $acessoId)
     {
-        $acessoId = $request->input('acessoId');
-        $dataInicial = $request->input('data_inicial');
-        $dataFinal = $request->input('data_final');
-
-        $historicoAcessos = Acesso::where('acesso_id', $acessoId)
-            ->whereDate('data_acesso', '>=', $dataInicial)
-            ->whereDate('data_acesso', '<=', $dataFinal)
-            ->get();
-
-        
-        if ($historicoAcessos->isEmpty()) {
-            return response()->json([
-                'message' => 'Nenhum histórico de acesso encontrado para este ID de acesso e intervalo de datas.',
-            ], 404);
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+    
+        // Verificar se o acessoId é um número inteiro válido
+        if (!is_numeric($acessoId) || $acessoId <= 0) {
+            return response()->json(['message' => 'Acesso ID inválido']);
         }
-
-        $data = array( 
-            'historicoAcessos' => $historicoAcessos
-        );
-
-        return json_encode($data);
-      
+    
+        $data = DB::table('historico_acessos')
+            ->where('acesso_id', $acessoId) // Substitua 'acesso_id' pelo nome correto da coluna no seu banco de dados
+            ->whereBetween('data_acesso', [$startDate, $endDate])
+            ->get()
+            ->toArray(); // Convertendo a coleção para array
+    
+        if (empty($data)) {
+            return response()->json(['message' => 'Nenhum dado encontrado']);
+        } else {
+            return response()->json($data);
+        }
     }
 
     public function destroy($id)
