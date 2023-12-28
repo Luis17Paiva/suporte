@@ -8,15 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Acesso extends Model
 {
     use HasFactory;
-    protected $table = 'acesso'; // Nome da tabela no banco de dados
-    protected $primaryKey = 'id'; // Nome da coluna de chave primária
+    protected $table = 'acesso'; 
+    protected $primaryKey = 'id'; 
     protected $fillable = [
         'empresa',
         'tipo_acesso',
         'acesso_id',
         'senha',
         'excluido'
-        // Adicione outros campos aqui
     ];
 }
 

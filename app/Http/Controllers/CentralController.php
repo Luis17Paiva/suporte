@@ -21,31 +21,31 @@ class CentralController
         $data_atual = date('Y-m-d');
 
         // Consulta a quantidade de atendimentos na fila de espera
-        $fila_qtd = DB::table('atendimentos')
+        $fila_qtd = DB::table('atendimento')
             ->where('status', '=', 'EM ESPERA')
             ->where('data_inclusao', '=', $data_atual)
             ->count();
 
         // Consulta a quantidade de atendimentos em andamento
-        $atendendo_qtd = DB::table('atendimentos')
+        $atendendo_qtd = DB::table('atendimento')
             ->where('status', '=', 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO')
             ->where('data_inclusao', '=', $data_atual)
             ->count();
 
         // Consulta a quantidade de atendimentos perdidos
-        $perdidas_qtd = DB::table('atendimentos')
+        $perdidas_qtd = DB::table('atendimento')
             ->where('status', '=', 'PERDIDO')
             ->where('data_inclusao', '=', $data_atual)
             ->count();
 
         // Consulta a quantidade de atendimentos total
-        $total = DB::table('atendimentos')
+        $total = DB::table('atendimento')
             ->where('status', '<>', 'N/A URA')
             ->where('data_inclusao', '=', $data_atual)
             ->count();
 
         // Consulta os registros de atendimentos na fila de espera
-        $fila_registros = DB::table('atendimentos')
+        $fila_registros = DB::table('atendimento')
             ->where('status', '=', 'EM ESPERA')
             ->where('data_inclusao', '=', $data_atual)
             ->orderBy('hora_chamada')
@@ -70,7 +70,7 @@ class CentralController
         }
 
         // Consulta os registros de atendimentos em andamento
-        $atend_registros = DB::table('atendimentos')
+        $atend_registros = DB::table('atendimento')
             ->join('colaboradores', 'atendimentos.id_ramal', '=', 'colaboradores.id')
             ->where('atendimentos.status', '=', 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO')
             ->where('atendimentos.data_inclusao', '=', $data_atual)
@@ -93,7 +93,7 @@ class CentralController
         }
 
         // Consulta os registros de atendimentos perdidos
-        $perd_registros = DB::table('atendimentos')
+        $perd_registros = DB::table('atendimento')
             ->where('status', '=', 'PERDIDO')
             ->where('data_inclusao', '=', $data_atual)
             ->where('ura', '<>', 'ADM')

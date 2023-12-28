@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const registrarAcesso = (acessoId) => {
         axios.post(`/suporte/public/registrar-acesso/${acessoId}`)
             .then(response => {
-                console.log(response.data.message);
+               
             })
             .catch(error => {
                 console.error(error);
@@ -144,9 +144,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Iterar sobre cada registro no JSON
                     data.forEach(record => {
                         const tableRow = $('<tr>');
-
+                        
                         // Adicionar informações do registro às células da linha
-                        tableRow.append($('<td>').text(record.usuario), $('<td>').text(record.data_acesso));
+                        tableRow.append($('<td>').text(record.usuario), $('<td>').text(record.created_at));
 
                         // Adicionar a linha ao corpo da tabela
                         tableBody.append(tableRow);

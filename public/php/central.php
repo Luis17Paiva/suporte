@@ -48,19 +48,19 @@ function consultarRegistros($conn, $query)
 }
 
 // Consulta a quantidade de atendimentos na fila de espera
-$query = "SELECT COUNT(id) FROM atendimentos WHERE status = 'EM ESPERA' AND data_inclusao = '$data_atual'";
+$query = "SELECT COUNT(id) FROM atendimento WHERE status = 'EM ESPERA' AND data_inclusao = '$data_atual'";
 $fila_qtd = consultarValor($conn, $query);
 
 // Consulta a quantidade de atendimentos em andamento
-$query = "SELECT COUNT(id) FROM atendimentos WHERE status = 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO' AND data_inclusao = '$data_atual'";
+$query = "SELECT COUNT(id) FROM atendimento WHERE status = 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO' AND data_inclusao = '$data_atual'";
 $atendendo_qtd = consultarValor($conn, $query);
 
 // Consulta a quantidade de atendimentos perdidos
-$query = "SELECT COUNT(id) FROM atendimentos WHERE status = 'PERDIDO' AND data_inclusao = '$data_atual'";
+$query = "SELECT COUNT(id) FROM atendimento WHERE status = 'PERDIDO' AND data_inclusao = '$data_atual'";
 $perdidas_qtd = consultarValor($conn, $query);
 
 // Consulta os registros de atendimentos na fila de espera
-$query = "SELECT hora_chamada, ura FROM atendimentos WHERE status = 'EM ESPERA' AND data_inclusao = '$data_atual' ORDER BY hora_chamada";
+$query = "SELECT hora_chamada, ura FROM atendimento WHERE status = 'EM ESPERA' AND data_inclusao = '$data_atual' ORDER BY hora_chamada";
 $fila_registros = consultarRegistros($conn, $query);
 
 $fila_list = array();
@@ -83,8 +83,8 @@ foreach ($fila_registros as $registro) {
 
 // Consulta os registros de atendimentos em andamento
 $query = "SELECT a.hora_atendimento, c.nome
-            FROM atendimentos AS a
-            INNER JOIN colaboradores AS c ON a.id_ramal = c.id
+            FROM atendimento AS a
+            INNER JOIN colaborador AS c ON a.id_ramal = c.id
             WHERE a.status = 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO' AND a.data_inclusao = '$data_atual' ORDER BY a.hora_atendimento";
 $atend_registros = consultarRegistros($conn, $query);
 
@@ -104,7 +104,7 @@ foreach ($atend_registros as $registro) {
 }
 
 // Consulta os registros de atendimentos perdidos
-$query = "SELECT numero, hora_chamada, hora_desliga FROM atendimentos WHERE status = 'PERDIDO' AND data_inclusao = '$data_atual' AND NOT ura = 'ADM' ORDER BY hora_chamada DESC";
+$query = "SELECT numero, hora_chamada, hora_desliga FROM atendimento WHERE status = 'PERDIDO' AND data_inclusao = '$data_atual' AND NOT ura = 'ADM' ORDER BY hora_chamada DESC";
 $perd_registros = consultarRegistros($conn, $query);
 
 $perd_list = array();
@@ -123,7 +123,7 @@ foreach ($perd_registros as $registro) {
 }
 
 // Consulta a quantidade total de atendimentos do dia
-$query = "SELECT COUNT(id) AS total FROM atendimentos WHERE data_inclusao = '$data_atual' AND status <> 'N/A URA'";
+$query = "SELECT COUNT(id) AS total FROM atendimento WHERE data_inclusao = '$data_atual' AND status <> 'N/A URA'";
 $total = consultarValor($conn, $query);
 $total = gmdate($total);
 
@@ -135,13 +135,13 @@ $media_tempo_atendimento = '00:00:00';
 $media_tempo_espera= '00:00:00';
 
 // Consulta a quantidade total de atendimentos do dia
-$query = "SELECT COUNT(id) AS total FROM atendimentos WHERE status = 'FINALIZADO' AND data_inclusao = '$data_atual'";
+$query = "SELECT COUNT(id) AS total FROM atendimento WHERE status = 'FINALIZADO' AND data_inclusao = '$data_atual'";
 $total_at = consultarValor($conn, $query);
 $total_at = gmdate($total);
 
 if ($total_at > 0) {
     // Consulta para calcular a média de tempo de atendimento
-    $query = "SELECT ROUND(AVG(EXTRACT(EPOCH FROM hora_desliga - hora_atendimento))) AS media FROM atendimentos WHERE (hora_atendimento IS NOT NULL AND hora_desliga IS NOT NULL) AND status = 'FINALIZADO' AND data_inclusao = '$data_atual'";
+    $query = "SELECT ROUND(AVG(EXTRACT(EPOCH FROM hora_desliga - hora_atendimento))) AS media FROM atendimento WHERE (hora_atendimento IS NOT NULL AND hora_desliga IS NOT NULL) AND status = 'FINALIZADO' AND data_inclusao = '$data_atual'";
     $media_tempo_atendimento = consultarValor($conn, $query);
     if ($media_tempo_atendimento === NULL || $media_tempo_atendimento <= 0){
         $media_tempo_atendimento = '5';
@@ -151,7 +151,7 @@ if ($total_at > 0) {
     }
 
     // Consulta para calcular a média de tempo de espera
-    $query = "SELECT ROUND(AVG(EXTRACT(EPOCH FROM hora_atendimento - hora_chamada))) AS media FROM atendimentos WHERE  hora_chamada IS NOT NULL AND hora_atendimento IS NOT NULL AND data_inclusao = '$data_atual'";
+    $query = "SELECT ROUND(AVG(EXTRACT(EPOCH FROM hora_atendimento - hora_chamada))) AS media FROM atendimento WHERE  hora_chamada IS NOT NULL AND hora_atendimento IS NOT NULL AND data_inclusao = '$data_atual'";
     $media_tempo_espera = consultarValor($conn, $query);
     if ( $media_tempo_espera === NULL){
         $media_tempo_espera = '0';
@@ -161,24 +161,24 @@ if ($total_at > 0) {
     }
 
     // Consulta a quantidade de atendimentos perdidos do dia
-    $query = "SELECT COUNT(id) AS total_perdidas FROM atendimentos WHERE status = 'PERDIDO' AND data_inclusao = '$data_atual' AND NOT ura = 'ADM'";
+    $query = "SELECT COUNT(id) AS total_perdidas FROM atendimento WHERE status = 'PERDIDO' AND data_inclusao = '$data_atual' AND NOT ura = 'ADM'";
     $total_perdidas = consultarValor($conn, $query);
     $total_perdidas = gmdate($total_perdidas);
 
     if ($total_perdidas > 0) {
         // Consulta para calcular o maior tempo de desistência
-        $query = "SELECT MAX(EXTRACT(EPOCH FROM hora_desliga - hora_chamada)) AS max FROM atendimentos WHERE status = 'PERDIDO' AND data_inclusao = '$data_atual'";
+        $query = "SELECT MAX(EXTRACT(EPOCH FROM hora_desliga - hora_chamada)) AS max FROM atendimento WHERE status = 'PERDIDO' AND data_inclusao = '$data_atual'";
         $max_tempo_desistencia = consultarValor($conn, $query);
         $max_tempo_desistencia = gmdate('H:i:s', $max_tempo_desistencia);
 
         // Consulta para calcular a média de tempo de desistência
-        $query = "SELECT ROUND(AVG(EXTRACT(EPOCH FROM hora_desliga - hora_chamada))) AS media FROM atendimentos WHERE status = 'PERDIDO' AND data_inclusao = '$data_atual'";
+        $query = "SELECT ROUND(AVG(EXTRACT(EPOCH FROM hora_desliga - hora_chamada))) AS media FROM atendimento WHERE status = 'PERDIDO' AND data_inclusao = '$data_atual'";
         $media_tempo_desistencia = consultarValor($conn, $query);
         $media_tempo_desistencia = gmdate('H:i:s', $media_tempo_desistencia);
     }
 
     // Consulta para calcular o maior tempo de espera
-    $query = "SELECT MAX(EXTRACT(EPOCH FROM hora_atendimento - hora_chamada)) AS max FROM atendimentos WHERE hora_chamada IS NOT NULL AND hora_atendimento IS NOT NULL AND data_inclusao = '$data_atual'";
+    $query = "SELECT MAX(EXTRACT(EPOCH FROM hora_atendimento - hora_chamada)) AS max FROM atendimento WHERE hora_chamada IS NOT NULL AND hora_atendimento IS NOT NULL AND data_inclusao = '$data_atual'";
     $maior_tempo_espera = consultarValor($conn, $query);
     if ($maior_tempo_espera == NULL){
         $maior_tempo_espera = '0';

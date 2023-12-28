@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Colaborador extends Model
 {
     use HasFactory;
-    protected $table = 'colaboradores';
+    protected $table = 'colaborador';
     protected $primaryKey = 'id';
     public $timestamps = false;
 

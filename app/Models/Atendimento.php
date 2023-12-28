@@ -9,7 +9,7 @@ class Atendimento extends Model
 {
     use HasFactory;
 
-    protected $table = 'atendimentos'; // Nome da tabela no banco de dados
+    protected $table = 'atendimento'; // Nome da tabela no banco de dados
     protected $primaryKey = 'id'; // Nome da coluna de chave primária
 
     protected $fillable = [
@@ -22,6 +22,7 @@ class Atendimento extends Model
         'id_ramal',
         'status',
         'data_inclusao',
-        'id_asterisk'
+        'id_asterisk',
+        'excluido'
     ];
 }

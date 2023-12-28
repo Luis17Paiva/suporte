@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('historico_acessos', function (Blueprint $table) {
+        Schema::create('acesso_hist', function (Blueprint $table) {
             $table->id();
             $table->string('usuario');
-            $table->timestamp('data_acesso');
             $table->string('acesso_id');
+            $table->timestamps(); // Adiciona automaticamente colunas created_at e updated_at
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('historico_acessos');
+        Schema::dropIfExists('acesso_hist');
     }
 };
