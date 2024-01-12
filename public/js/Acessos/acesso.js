@@ -5,9 +5,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeModalHistButtons = document.querySelectorAll(".close-modal-hist");
     const openModalAcessoButtons = document.querySelectorAll(".open-modal-acesso");
     const closeModalAcessoButtons = document.querySelectorAll(".close-modal-acesso");
+    const checkbox = document.querySelectorAll(".estou_ciente");
+
     var fadeElement = document.getElementById('fade');
 
-
+    /*checkbox.addEventListener("click", function() {
+        buttonA.disabled = !checkbox.checked;
+      });*/
 
 
     const openModal = (targetModal) => {
