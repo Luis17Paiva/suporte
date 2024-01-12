@@ -69,11 +69,11 @@
                                 que possa comprometer os dados pessoais dos clientes.</p>
                             <p>Lei nº 13.709, de 14 de agosto de 2018.</p>
                             <div class="check">
-                                <input type="checkbox" name="estou_ciente" required/>
+                                <input id="ckbx" type="checkbox" name="estou_ciente" required/>
                                 <label for="estou_ciente">Estou Ciente</label>
                             </div>
                             <div class="button m">
-                                <a @required() class="open-modal-acesso" data-target="#modal-acesso-{{ $acesso->id }}">Acessar</a>
+                                <a  class="open-modal-acesso" data-target="#modal-acesso-{{ $acesso->id }}">Acessar</a>
                             </div>
                         </div>
                     </div>
