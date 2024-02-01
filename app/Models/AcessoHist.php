@@ -9,12 +9,12 @@ class AcessoHist extends Model
 {
     use HasFactory;
 
-    protected $timestamps = true;
+    // Defina os timestamps como públicos
+    public $timestamps = true;
     protected $table = 'acesso_hist'; // Nome da tabela no banco de dados
     protected $primaryKey = 'id'; 
     protected $fillable = [
         'usuario', 
-        'data_acesso',
         'acesso_id'
     ]; 
   

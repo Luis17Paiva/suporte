@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
             modal.classList.add('hide');
         });
     };
+    
     const closeModalAcesso = () => {
         let modals = document.querySelectorAll('.modal-acesso');
         modals.forEach(modal => {
@@ -79,13 +80,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const registrarAcesso = (acessoId) => {
         axios.post(`/suporte/public/registrar-acesso/${acessoId}`)
             .then(response => {
-
+                // Lidar com a resposta, se necessário
             })
             .catch(error => {
                 console.error(error);
             });
     };
-
+    
     openModalHistButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
             event.preventDefault();

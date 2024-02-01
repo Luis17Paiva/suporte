@@ -82,12 +82,10 @@ class AcessoController extends Controller
     public function registrarAcesso(Request $request, $acessoId)
     {
         $usuario = $request->user()->name;
-        $dataAcesso = now();
 
         // Crie uma instância do modelo e preencha os dados
         $acessoHist = new AcessoHist([
             'usuario' => $usuario,
-            'data_acesso' => $dataAcesso,
             'acesso_id' => $acessoId,
         ]);
 
