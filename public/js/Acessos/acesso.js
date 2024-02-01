@@ -5,14 +5,29 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeModalHistButtons = document.querySelectorAll(".close-modal-hist");
     const openModalAcessoButtons = document.querySelectorAll(".open-modal-acesso");
     const closeModalAcessoButtons = document.querySelectorAll(".close-modal-acesso");
-    const checkbox = document.querySelectorAll(".estou_ciente");
+    const checkbox = document.querySelectorAll(".check-ciente");
 
     var fadeElement = document.getElementById('fade');
 
-    /*checkbox.addEventListener("click", function() {
-        buttonA.disabled = !checkbox.checked;
-      });*/
 
+    // Adiciona um listener ao botão de acesso
+
+    /*document.querySelector('.access-button').addEventListener('click', function (e) {
+        // Verificar se a checkbox está marcada
+        if (!checkbox.checked) {
+            e.preventDefault(); // Impedir o clique no botão
+            alert('Você deve estar ciente da LGPD para acessar os dados.'); // Exibir mensagem de alerta
+        }
+    });*/
+
+    const validaCheckBox = (targetCheckBox) => {
+
+        const checkbox = document.querySelector(targetCheckBox);
+        if (!checkbox.checked){
+            return false;
+        }
+        return true;
+    }
 
     const openModal = (targetModal) => {
         const modal = document.querySelector(targetModal);
@@ -58,16 +73,39 @@ document.addEventListener("DOMContentLoaded", function () {
             openModal(targetModalId);
         });
     });
+    
+
+    /*checkbox.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            var modalId = this.id.replace('check-ciente-', '');
+            var acessoModal = document.getElementById('modal-acesso-' + modalId);
+            var isChecked = this.checked;
+            var openButton = acessoModal.querySelector('.open-modal-acesso');
+            
+            if (isChecked) {
+                openButton.removeAttribute('disabled');
+            } else {
+                openButton.setAttribute('disabled', 'disabled');
+            }
+        });
+    });*/
 
     openModalAcessoButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
             event.preventDefault();
-
+    
             const targetModalId = event.currentTarget.getAttribute("data-target");
-            openModalAcesso(targetModalId);
-
             const acessoId = targetModalId.split('-')[2];
-            registrarAcesso(acessoId);
+            const checkbox = document.getElementById('check-ciente-' + acessoId);
+            
+            // Verificar se a checkbox está marcada
+            if (checkbox.checked) {
+                openModalAcesso(targetModalId);
+                registrarAcesso(acessoId);
+            } else {
+                event.preventDefault(); // Impedir a abertura do modal
+                alert('Você deve estar ciente para acessar os dados.'); // Exibir mensagem de alerta
+            }
         });
     });
 
@@ -75,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const registrarAcesso = (acessoId) => {
         axios.post(`/suporte/public/registrar-acesso/${acessoId}`)
             .then(response => {
-               
+
             })
             .catch(error => {
                 console.error(error);
@@ -148,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Iterar sobre cada registro no JSON
                     data.forEach(record => {
                         const tableRow = $('<tr>');
-                        
+
                         // Adicionar informações do registro às células da linha
                         tableRow.append($('<td>').text(record.usuario), $('<td>').text(record.created_at));
 
