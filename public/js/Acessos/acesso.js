@@ -10,25 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var fadeElement = document.getElementById('fade');
 
 
-    // Adiciona um listener ao botão de acesso
-
-    /*document.querySelector('.access-button').addEventListener('click', function (e) {
-        // Verificar se a checkbox está marcada
-        if (!checkbox.checked) {
-            e.preventDefault(); // Impedir o clique no botão
-            alert('Você deve estar ciente da LGPD para acessar os dados.'); // Exibir mensagem de alerta
-        }
-    });*/
-
-    const validaCheckBox = (targetCheckBox) => {
-
-        const checkbox = document.querySelector(targetCheckBox);
-        if (!checkbox.checked){
-            return false;
-        }
-        return true;
-    }
-
     const openModal = (targetModal) => {
         const modal = document.querySelector(targetModal);
         if (modal.classList.contains('hide')) {
@@ -74,21 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
     
-
-    /*checkbox.forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            var modalId = this.id.replace('check-ciente-', '');
-            var acessoModal = document.getElementById('modal-acesso-' + modalId);
-            var isChecked = this.checked;
-            var openButton = acessoModal.querySelector('.open-modal-acesso');
-            
-            if (isChecked) {
-                openButton.removeAttribute('disabled');
-            } else {
-                openButton.setAttribute('disabled', 'disabled');
-            }
-        });
-    });*/
 
     openModalAcessoButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
