@@ -9,31 +9,41 @@ use App\Models\Colaborador;
 
 class RelatorioController extends Controller
 {
-    public function index(Request $request)
-    {   
-        $dataAtual = now();
-        $dataInicio =  $request->input('data_inicio') ? Carbon::parse($request->input('data_inicio'))->startOfDay() : $dataAtual;
-        $dataFim = $request->input('data_fim') ? Carbon::parse($request->input('data_fim'))->endOfDay() : $dataAtual;
-        return view('Relatorios.relatorios', compact('dataAtual','dataInicio', 'dataFim'));
+    protected $atendimento;
+    protected $colaborador;
+    protected $request;
+
+    public function __construct(Atendimento $atendimento, Colaborador $colaborador, Request $request)
+    {
+        $this->atendimento = $atendimento;
+        $this->colaborador = $colaborador;
+        $this->request = $request;
     }
 
-    public function showRelatorio(Request $request)
-    {   
-        global $quantidadeLigacoes;
+    public function index()
+    {
+        $dataAtual = now();
+        $dataInicio = $this->request->input('data_inicio') ? Carbon::parse($this->request->input('data_inicio'))->startOfDay() : $dataAtual;
+        $dataFim = $this->request->input('data_fim') ? Carbon::parse($this->request->input('data_fim'))->endOfDay() : $dataAtual;
+        return view('Relatorios.relatorios', compact('dataAtual', 'dataInicio', 'dataFim'));
+    }
+    public function showRelatorio()
+    {
+        $quantidadeLigacoes = 0; // Inicialize $quantidadeLigacoes antes de usá-lo
+
         $dataAtual = now()->format('Y-m-d');
-        $dataInicio = $request->input('data_inicio') ? Carbon::parse($request->input('data_inicio'))->startOfDay() : null;
-        $dataFim = $request->input('data_fim') ? Carbon::parse($request->input('data_fim'))->endOfDay() : null;
+        $dataInicio = $this->request->input('data_inicio') ? Carbon::parse($this->request->input('data_inicio'))->startOfDay() : null;
+        $dataFim = $this->request->input('data_fim') ? Carbon::parse($this->request->input('data_fim'))->endOfDay() : null;
 
         $atendimentos = Atendimento::whereBetween('data_inclusao', [$dataInicio, $dataFim])->get();
-        if (!$atendimentos->isEmpty()){
 
+        if (!$atendimentos->isEmpty()) {
             foreach ($atendimentos as $atendimento) {
                 // Verifica se o status não é "FORA DO HORÁRIO"
                 if ($atendimento->status !== 'FORA DO HORÁRIO') {
                     $quantidadeLigacoes++;
                 }
             }
-
             if ($this->calcularDiferencaDias($atendimentos) > 0) {
                 $relatorios = [
                     'tempo_medio_espera' => $this->calcularTempoMedioEspera($atendimentos),
@@ -45,18 +55,19 @@ class RelatorioController extends Controller
                     'media_atendimentos' => $this->calcularMediaAtendimentos($atendimentos),
                     'dados_por_colaborador' => $this->getDadosPorColaborador($atendimentos),
                 ];
+
                 // Verifica se a variável $dataInicio é diferente de null
                 if ($dataInicio !== null) {
                     return view('Relatorios.relatorios', compact('relatorios', 'dataAtual', 'dataInicio', 'dataFim'));
                 } else {
                     return view('Relatorios.relatorios', compact('relatorios', 'dataAtual', 'dataFim'));
                 }
-                
             }
         } else {
-            return $this->index($request);
+            return $this->index();
         }
     }
+
 
 
     private function calcularTempoMedioEspera($atendimentos)
