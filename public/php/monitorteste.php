@@ -28,13 +28,15 @@ $horarioTermino = '18:00:00';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
 
-$managerHost = $_ENV['MANAGER_HOST'];
-$managerPort = $_ENV['MANAGER_PORT'];
-$managerUsername = $_ENV['MANAGER_USERNAME'];
-$managerPassword = $_ENV['MANAGER_PASSWORD'];
-
 // Conecta ao banco de dados
-$dsn = "pgsql:host=10.0.0.18;port=5432;dbname=Central;user=postgres;password=L_s321123S_l";
+
+$pgHost = $_ENV['DB_HOST'];
+$pgPort = $_ENV['DB_PORT'];
+$pgDb = $_ENV['DB_DATABASE'];
+$pgUser = $_ENV['DB_USERNAME'];
+$pgPass =  $_ENV['DB_PASSWORD'];
+
+$dsn = "pgsql:host=$pgHost;port=$pgPort;dbname=$pgDb;user=$pgUser;password=$pgPass";
 $conn = new PDO($dsn);
 
 // Opções de configuração para a conexão com o servidor AMI
