@@ -1,2 +1,19 @@
-node_modules
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+/vendor
+/node_modules
 .env
+/storage/*.log
+/storage/debugbar
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/testing
+/storage/framework/views
+/storage/logs
+/bootstrap/cache
+.env.*.php
+.idea/
+*.iml
+.homestead.yaml
+.homestead/
