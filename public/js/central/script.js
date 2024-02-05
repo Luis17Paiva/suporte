@@ -19,10 +19,10 @@ function preencherTabelaEspera(dados) {
     if (tabela !== null && tabela.rows !== undefined) {
       for (var i = 0; i < tabela.rows.length; i++) {
         var tempoEspera = tabela.rows[i].cells[1].innerText;
-        if (ura === 'ADM' ){
-          tabela.rows[i].cells[1].style.backgroundColor =  "rgb(75, 179, 253)";
+        if (ura === 'ADM') {
+          tabela.rows[i].cells[1].style.backgroundColor = "rgb(75, 179, 253)";
 
-        } else{
+        } else {
           tabela.rows[i].cells[1].style.backgroundColor = (tempoEspera < "00:05:00") ? "rgb(66, 226, 184)" : (tempoEspera < "00:10:00") ? "rgb(255, 242, 117)" : "rgb(234, 82, 111)";
         }
       }
@@ -112,33 +112,25 @@ function atualizarStatus(dados) {
 }
 
 
-// Obtem token de autenticação =
+// Obtem token de autenticação 
 var token = document.querySelector('input[name="_token"]').value;
 
-axios.get('/suporte/public/central/result', {
-    headers: {
-        'X-CSRF-TOKEN': token
-    }
-})
-.then(function (response) {
-    // Processa a resposta da solicitação
-    atualizarStatus(response.data);
-    preencherTabelaEspera(response.data);
-    preencherTabelaAtendendo(response.data);
-    preencherTabelaPerdidas(response.data);
-})
-.catch(function (error) {
-    //console.log(error);
-});
-
 setInterval(function () {
-  axios.get('/suporte/public/central/result').then(function (response) {
-    console.log(response);
-    atualizarStatus(response.data);
-    preencherTabelaEspera(response.data);
-    preencherTabelaAtendendo(response.data);
-    preencherTabelaPerdidas(response.data);
-  });
+  axios.get('/suporte/public/central/result', {
+    headers: {
+      'X-CSRF-TOKEN': token
+    }
+  })
+    .then(function (response) {
+      
+      atualizarStatus(response.data);
+      preencherTabelaEspera(response.data);
+      preencherTabelaAtendendo(response.data);
+      preencherTabelaPerdidas(response.data);
+    })
+    .catch(function (error) {
+      //console.log(error);
+    });
 }, 900);
 
 
