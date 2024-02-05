@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="{{ asset('js/central/script.js') }}"></script>
+    <script src="{{ asset('js/central/script.js') }}" defer></script>
 </head>
 <body>
     <section class="central">

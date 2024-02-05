@@ -2,9 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginAndRegisterController;
-use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\Auth\ConfirmPasswordController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CentralController;
 use App\Http\Controllers\ColaboradorController;
