@@ -45,12 +45,5 @@ class ColaboradorController extends Controller
         return redirect()->route('colaboradores')->with('success', 'Colaborador atualizado com sucesso.');
     }
 
-    public function destroy($id)
-    {
-        $colaborador = Colaborador::findOrFail($id);
-        $colaborador->delete();
-
-        return redirect()->route('colaboradores')->with('success', 'Colaborador excluído com sucesso.');
-    }
 
 }

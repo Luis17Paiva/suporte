@@ -1,18 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Atendimento;
+use Illuminate\Support\Facades\DB;
+use DateTime;
 use Illuminate\Http\Request;
 
 class CentralController
-{   
-    
+{
+
     public function index()
     {
-       return view("Central/central");
+        return view("Central/central");
     }
-    
-    private function result()
+
+    public function result()
     {
         // Define o fuso horário
         date_default_timezone_set('America/Sao_Paulo');
@@ -71,10 +74,10 @@ class CentralController
 
         // Consulta os registros de atendimentos em andamento
         $atend_registros = DB::table('atendimento')
-            ->join('colaboradores', 'atendimentos.id_ramal', '=', 'colaboradores.id')
-            ->where('atendimentos.status', '=', 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO')
-            ->where('atendimentos.data_inclusao', '=', $data_atual)
-            ->orderBy('atendimentos.hora_atendimento')
+            ->join('colaborador', 'atendimento.id_ramal', '=', 'colaborador.id')
+            ->where('atendimento.status', '=', 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO')
+            ->where('atendimento.data_inclusao', '=', $data_atual)
+            ->orderBy('atendimento.hora_atendimento')
             ->get();
 
         $atend_list = array();
@@ -99,74 +102,88 @@ class CentralController
             ->where('ura', '<>', 'ADM')
             ->orderBy('hora_chamada', 'desc')
             ->get();
-    
+
         $perd_list = array();
         foreach ($perd_registros as $registro) {
             $hora_chamada = new DateTime($registro->hora_chamada);
             $hora_desliga = new DateTime($registro->hora_desliga);
-    
+
             $diferenca = $hora_desliga->diff($hora_chamada);
-    
+
             $tempo_de_espera = $diferenca->format('%H:%I:%S');
-    
+
             $perd_list[] = array(
                 'numero' => $registro->numero,
                 'tempo_de_espera' => $tempo_de_espera
             );
         }
-            
+
         // Calcula a media do tempo de espera
         // Considerando clientes atendidos, quanto tempo esperaram na média
-        $media_tempo_espera = Atendimento::whereDate('data_inclusao', $data_atual)
+        $media_tempo_espera_seconds = Atendimento::whereDate('data_inclusao', $data_atual)
             ->where('status', '=', 'FINALIZADO')
             ->whereNotNull('hora_chamada')
             ->whereNotNull('hora_atendimento')
-            ->avg(function($a) {
-                $hora_atendimento = new DateTime($a->hora_atendimento);
-                $hora_chamada = new DateTime($a->hora_chamada);
+            ->get()
+            ->map(function ($atendimento) {
+                $hora_atendimento = new DateTime($atendimento->hora_atendimento);
+                $hora_chamada = new DateTime($atendimento->hora_chamada);
+                // Calcula a diferença entre as horas da ligação e a hora do atendimento
+                return $hora_atendimento->getTimestamp() - $hora_chamada->getTimestamp(); // Retorna apenas os segundos para a média
+            })
+            ->avg();
+        // Converte os segundos para o formato HH:mm:ss
+        $media_tempo_espera = gmdate('H:i:s', $media_tempo_espera_seconds);
 
-                return $hora_atendimento->diff($hora_chamada);
-            });
 
         // Calcula a media do tempo de atendimento
         // Considerando os clientes que foram atendidos, quanto tempo durou o atendimento na média
-        $media_tempo_atendimento = Atendimento::whereDate('data_inclusao', $data_atual)
+        $media_tempo_atendimento_seconds = Atendimento::whereDate('data_inclusao', $data_atual)
             ->where('status', '=', 'FINALIZADO')
             ->whereNotNull('hora_atendimento')
             ->whereNotNull('hora_desliga')
-            ->avg(function($a) {
-                $hora_atendimento = new DateTime($a->hora_atendimento);
-                $hora_desliga = new DateTime($a->hora_desliga);
+            ->get()
+            ->map(function ($atendimento) {
+                $hora_atendimento = new DateTime($atendimento->hora_atendimento);
+                $hora_desliga = new DateTime($atendimento->hora_desliga);
+                // Calcula a diferença entre as horas de atendimento e desligamento
+                return $hora_desliga->getTimestamp() - $hora_atendimento->getTimestamp(); // Retorna a diferença em segundos
+            })
+            ->avg();
+        $media_tempo_atendimento = gmdate('H:i:s', $media_tempo_atendimento_seconds);
 
-                return $hora_desliga->diff($hora_atendimento);
-            });
 
         // Calcula a media do tempo de desistencia
         // Considernado os cliente que não foram atendidos, quanto tempo ficaram em espera na média
-        $media_tempo_desistencia = Atendimento::whereDate('data_inclusao', $data_atual)
+        $media_tempo_desistencia_seconds = Atendimento::whereDate('data_inclusao', $data_atual)
             ->where('status', '=', 'PERDIDO')
             ->whereNotNull('hora_chamada')
             ->whereNotNull('hora_desliga')
-            ->avg(function($a) {
-                $hora_chamada = new DateTime($a->hora_chamada);
-                $hora_desliga = new DateTime($a->hora_desliga);
+            ->get()
+            ->map(function ($atendimento) {
+                $hora_chamada = new DateTime($atendimento->hora_chamada);
+                $hora_desliga = new DateTime($atendimento->hora_desliga);
 
-                return $hora_desliga->diff($hora_chamada);
-            });
-        
+                return $hora_desliga->getTimestamp() - $hora_chamada->getTimestamp(); // Retorna apenas os segundos para a média
+            })
+            ->avg();
+        $media_tempo_desistencia =  gmdate('H:i:s', $media_tempo_desistencia_seconds);
+
         // Calcula o maior tempo de espera considerando os que foram e não foram atendidos
-        $maior_tempo_espera = Atendimento::whereDate('data_inclusao', $data_atual)
+        $maior_tempo_espera_seconds = Atendimento::whereDate('data_inclusao', $data_atual)
             ->where('status', '=', 'FINALIZADO')
             ->whereNotNull('hora_chamada')
             ->whereNotNull('hora_atendimento')
-            ->max(function($a) {
-                $hora_atendimento = new DateTime($a->hora_atendimento);
-                $hora_chamada = new DateTime($a->hora_chamada);
+            ->get()
+            ->map(function ($atendimento) {
+                $hora_atendimento = new DateTime($atendimento->hora_atendimento);
+                $hora_chamada = new DateTime($atendimento->hora_chamada);
+                // Calcula a diferença entre as horas de atendimento e chamada ou desligamento em segundos
+                return $hora_atendimento->getTimestamp() - $hora_chamada->getTimestamp(); // Retorna apenas os segundos
+            })
+            ->max();
+        $maior_tempo_espera = gmdate('H:i:s',$maior_tempo_espera_seconds);
 
-                return $hora_atendimento->diff($hora_chamada);
-            });
-
-        // Monta o array de dados a serem retornados
         $data = array(
             'f' => $fila_qtd,
             'a' => $atendendo_qtd,
@@ -180,10 +197,10 @@ class CentralController
             'mt' => $maior_tempo_espera,
             't' => $total
         );
-    
-        // Converte o array em formato JSON e retorna como resposta
+
+        // Converte o array em formato JSON 
         return response()->json($data);
     }
-    
+
 }
 

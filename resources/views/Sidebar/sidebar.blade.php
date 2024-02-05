@@ -9,7 +9,6 @@
     <link href="{{ asset('css/Sidebar/sidebar.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/boxicons-master/css/boxicons.min.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
 

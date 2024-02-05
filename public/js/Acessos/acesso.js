@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const registrarAcesso = (acessoId) => {
         axios.post(`/suporte/public/registrar-acesso/${acessoId}`)
             .then(response => {
-                // Lidar com a resposta, se necessário
+                
             })
             .catch(error => {
                 console.error(error);
@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Verificar se 'data' é uma matriz não nula e não indefinida
                 if (Array.isArray(data) && data !== null && data !== undefined) {
                     // Criar uma tabela para armazenar os registros
-                    const table = $('<table>').addClass('table'); // Adicionei a classe 'table' do Bootstrap para estilização básica
+                    const table = $('<table>').addClass('table'); 
 
                     // Cabeçalho da tabela
                     const tableHeader = $('<thead>').append($('<tr>').append($('<th>').text('Usuário'), $('<th>').text('Data de Acesso')));

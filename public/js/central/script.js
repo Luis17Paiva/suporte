@@ -112,15 +112,27 @@ function atualizarStatus(dados) {
 }
 
 
-axios.post('php/central.php').then(function (response) {
-  atualizarStatus(response.data);
-  preencherTabelaEspera(response.data);
-  preencherTabelaAtendendo(response.data);
-  preencherTabelaPerdidas(response.data);
+// Obtem token de autenticação =
+var token = document.querySelector('input[name="_token"]').value;
+
+axios.get('/suporte/public/central/result', {
+    headers: {
+        'X-CSRF-TOKEN': token
+    }
+})
+.then(function (response) {
+    // Processa a resposta da solicitação
+    atualizarStatus(response.data);
+    preencherTabelaEspera(response.data);
+    preencherTabelaAtendendo(response.data);
+    preencherTabelaPerdidas(response.data);
+})
+.catch(function (error) {
+    //console.log(error);
 });
 
 setInterval(function () {
-  axios.post('php/central.php').then(function (response) {
+  axios.get('/suporte/public/central/result').then(function (response) {
     console.log(response);
     atualizarStatus(response.data);
     preencherTabelaEspera(response.data);

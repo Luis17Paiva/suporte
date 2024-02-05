@@ -45,7 +45,7 @@ class RelatorioController extends Controller
                     'media_atendimentos' => $this->calcularMediaAtendimentos($atendimentos),
                     'dados_por_colaborador' => $this->getDadosPorColaborador($atendimentos),
                 ];
-                // Verifique se a variável $dataInicio é diferente de null
+                // Verifica se a variável $dataInicio é diferente de null
                 if ($dataInicio !== null) {
                     return view('Relatorios.relatorios', compact('relatorios', 'dataAtual', 'dataInicio', 'dataFim'));
                 } else {

@@ -17,18 +17,19 @@ Route::post('/logout', [LoginAndRegisterController::class, 'logout'])->name('log
 
 Route::get('/register', [LoginAndRegisterController::class, 'showLoginAndRegisterForm'])->name('register');
 Route::post('/register', [LoginAndRegisterController::class, 'register']);
-
+/*
 Route::get("/verify", [VerificationController::class, "index"])->name('verify.get');
 Route::post("/verify", [VerificationController::class, "index"])->name('verify.post');
 Route::get("/confirm", [ConfirmPasswordController::class, "index"])->name('confirm.get');
 Route::post("/confirm", [ConfirmPasswordController::class, "index"])->name('confirm.post');
 Route::get("/reset", [ForgotPasswordController::class, "index"])->name('reset.get');
 Route::post("/reset", [ForgotPasswordController::class, "index"])->name('reset.post');
-
+*/
 Route::middleware(['auth'])->group(function () {
     Route::get("/home", [HomeController::class,"index"])->name('home');
     Route::post("/home", [HomeController::class,"index"])->name('home.post');
     Route::get('/central',[CentralController::class,'index'])->name('central');
+    Route::get('/central/result',[CentralController::class,'result'])->name('central.result');
     Route::get('/colaboradores', [ColaboradorController::class,'index'])->name('colaboradores');
     Route::get('/colaboradores/{id}/edit', [ColaboradorController::class, 'edit'])->name('colaboradores.edit');
     Route::put('/colaboradores/{id}', [ColaboradorController::class, 'update'])->name('colaboradores.update');

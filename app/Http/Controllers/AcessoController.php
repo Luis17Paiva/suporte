@@ -6,7 +6,6 @@ use App\Models\Acesso;
 use Illuminate\Support\Facades\DB;
 use App\Models\AcessoHist;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class AcessoController extends Controller
 {
