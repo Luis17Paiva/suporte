@@ -8,7 +8,14 @@ use App\Models\AcessoHist;
 use Illuminate\Http\Request;
 
 class AcessoController extends Controller
-{
+{  
+    protected $colaborador;
+    protected $request;
+    public function __construct(Acesso $acesso, Request $request)
+    {
+        $this->acesso = $acesso;
+        $this->request = $request;
+    } 
     public function index()
     {
         $acessos = Acesso::all();
@@ -21,13 +28,13 @@ class AcessoController extends Controller
         return view('Acessos.create');
     }
 
-    public function store(Request $request)
+    public function store()
     {
         $acesso = new Acesso;
-        $acesso->empresa = $request->input('empresa');
-        $acesso->tipo_acesso = $request->input('tipo_acesso');
-        $acesso->acesso_id = $request->input('acesso_id');
-        $acesso->senha = $request->input('senha');
+        $acesso->empresa = $this->request->input('empresa');
+        $acesso->tipo_acesso = $this->request->input('tipo_acesso');
+        $acesso->acesso_id = $this->request->input('acesso_id');
+        $acesso->senha =  $this->request->input('senha');
         $acesso->save();
 
         return redirect()->route('acessos')->with('success', 'Acesso adicionado com sucesso.');
@@ -40,24 +47,24 @@ class AcessoController extends Controller
         return view('Acessos.edit', compact('acesso'));
     }
 
-    public function update(Request $request, $id)
+    public function update($id)
     {
 
         $acesso = Acesso::findOrFail($id);
-        $acesso->empresa = $request->input('empresa');
-        $acesso->tipo_acesso = $request->input('tipo_acesso');
-        $acesso->acesso_id = $request->input('acesso_id');
-        $acesso->senha = $request->input('senha');
+        $acesso->empresa =  $this->request->input('empresa');
+        $acesso->tipo_acesso =  $this->request->input('tipo_acesso');
+        $acesso->acesso_id =  $this->request->input('acesso_id');
+        $acesso->senha =  $this->request->input('senha');
         $acesso->save();
 
         return redirect()->route('acessos');
     }
 
-    public function HistoricoAcessos(Request $request, $acessoId)
+    public function HistoricoAcessos($acessoId)
     {   
     
-        $startDate = $request->input('startDate');
-        $endDate = $request->input('endDate');
+        $startDate = $this->request->input('startDate');
+        $endDate =  $this->request->input('endDate');
     
         // Verificar se o acessoId é um número inteiro válido
         if (!is_numeric($acessoId) || $acessoId <= 0) {
@@ -78,9 +85,9 @@ class AcessoController extends Controller
     }
 
 
-    public function registrarAcesso(Request $request, $acessoId)
+    public function registrarAcesso($acessoId)
     {
-        $usuario = $request->user()->name;
+        $usuario = $this->request->user()->name;
 
         // Crie uma instância do modelo e preencha os dados
         $acessoHist = new AcessoHist([

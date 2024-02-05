@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class ColaboradorController extends Controller
 {
+    protected $colaborador;
+    protected $request;
+    public function __construct(Colaborador $colaborador, Request $request)
+    {
+        $this->colaborador = $colaborador;
+        $this->request = $request;
+    }
     public function index()
     {
         $colaboradores = Colaborador::all();
@@ -18,11 +25,11 @@ class ColaboradorController extends Controller
         return view('colaboradores.create');
     }
 
-    public function store(Request $request)
+    public function store()
     {
         $colaborador = new Colaborador;
-        $colaborador->id = $request->input('ramal');
-        $colaborador->nome = $request->input('nome');
+        $colaborador->id =$this->request->input('ramal');
+        $colaborador->nome =$this->request->input('nome');
         $colaborador->save();
 
         return redirect()->route('colaboradores')->with('success', 'Colaborador criado com sucesso.');
@@ -34,12 +41,12 @@ class ColaboradorController extends Controller
         return view('colaboradores.edit', compact('colaborador'));
     }
 
-    public function update(Request $request, $id)
+    public function update($id)
     {
         $colaborador = Colaborador::findOrFail($id);
-        $colaborador->id = $request->input('ramal');
-        $colaborador->nome = $request->input('nome');
-        $colaborador->excluido = $request->has('excluido');
+        $colaborador->id = $this->request->input('ramal');
+        $colaborador->nome = $this->request->input('nome');
+        $colaborador->excluido = $this->request->has('excluido');
         $colaborador->save();
 
         return redirect()->route('colaboradores')->with('success', 'Colaborador atualizado com sucesso.');
