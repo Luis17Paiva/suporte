@@ -116,13 +116,12 @@ function atualizarStatus(dados) {
 var token = document.querySelector('input[name="_token"]').value;
 
 setInterval(function () {
-  axios.get('/suporte/public/central/result', {
+  axios.get(window.location.pathname + '/result', {
     headers: {
       'X-CSRF-TOKEN': token
     }
   })
     .then(function (response) {
-      
       atualizarStatus(response.data);
       preencherTabelaEspera(response.data);
       preencherTabelaAtendendo(response.data);
