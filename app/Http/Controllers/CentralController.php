@@ -31,10 +31,23 @@ class CentralController
             ->count();
     }
 
-    protected function media($status,$data){
+    private function calcularMediaTempo($data, $status, $hora_inicial, $hora_final)
+{
+    $tempo_seconds = Atendimento::whereDate('data_inclusao', $data)
+        ->where('status', '=', $status)
+        ->whereNotNull($hora_inicial)
+        ->whereNotNull($hora_final)
+        ->get()
+        ->map(function ($atendimento) use ($hora_inicial, $hora_final) {
+            $hora_inicio = new DateTime($atendimento->{$hora_inicial});
+            $hora_fim = new DateTime($atendimento->{$hora_final});
+            return $hora_fim->getTimestamp() - $hora_inicio->getTimestamp();
+        })
+        ->avg();
 
+    return gmdate('H:i:s', $tempo_seconds);
+}
 
-    }
     public function result()
     {   
         // Denifição dos status de atendimento
@@ -48,7 +61,7 @@ class CentralController
         // Obtém a data atual
         $data_atual = date('Y-m-d');
 
-        // Consulta a quantidade de atendimentos na fila por status
+        // Consulta a quantidade de atendimentos por status
         $fila_qtd = $this->quantidade($data_atual,$emEspera);
         $atendendo_qtd = $this->quantidade($data_atual,$emAtendimento);
         $perdidas_qtd = $this->quantidade($data_atual,$perdida);
@@ -162,7 +175,9 @@ class CentralController
 
         // Calcula a media do tempo de desistencia
         // Considernado os cliente que não foram atendidos, quanto tempo ficaram em espera na média
-        $media_tempo_desistencia_seconds = Atendimento::whereDate('data_inclusao', $data_atual)
+        $media_tempo_desistencia = '00:00:00';
+        if($perdidas_qtd > 0){
+            $media_tempo_desistencia_seconds = Atendimento::whereDate('data_inclusao', $data_atual)
             ->where('status', '=', 'PERDIDO')
             ->whereNotNull('hora_chamada')
             ->whereNotNull('hora_desliga')
@@ -174,7 +189,9 @@ class CentralController
                 return $hora_desliga->getTimestamp() - $hora_chamada->getTimestamp(); // Retorna apenas os segundos para a média
             })
             ->avg();
-        $media_tempo_desistencia =  gmdate('H:i:s', $media_tempo_desistencia_seconds);
+            $media_tempo_desistencia =  gmdate('H:i:s', $media_tempo_desistencia_seconds);
+
+        }
 
         // Calcula o maior tempo de espera considerando os que foram e não foram atendidos
         $maior_tempo_espera_seconds = Atendimento::whereDate('data_inclusao', $data_atual)
