@@ -6,22 +6,9 @@ use App\Http\Controllers\CentralController;
 use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\AcessoController;
-use App\Http\Controllers\Auth\LoginController;
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginAndRegisterController::class, 'login']);
-Route::post('/logout', [LoginAndRegisterController::class, 'logout'])->name('logout');
+Auth::routes();
 
-Route::get('/register', [LoginAndRegisterController::class, 'showLoginAndRegisterForm'])->name('register');
-Route::post('/register', [LoginAndRegisterController::class, 'register']);
-/*
-Route::get("/verify", [VerificationController::class, "index"])->name('verify.get');
-Route::post("/verify", [VerificationController::class, "index"])->name('verify.post');
-Route::get("/confirm", [ConfirmPasswordController::class, "index"])->name('confirm.get');
-Route::post("/confirm", [ConfirmPasswordController::class, "index"])->name('confirm.post');
-Route::get("/reset", [ForgotPasswordController::class, "index"])->name('reset.get');
-Route::post("/reset", [ForgotPasswordController::class, "index"])->name('reset.post');
-*/
 Route::middleware(['auth'])->group(function () {
 
     // -----------------------------ROTAS GET--------------------------------
@@ -71,6 +58,3 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
