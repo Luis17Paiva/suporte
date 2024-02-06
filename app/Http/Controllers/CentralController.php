@@ -22,13 +22,13 @@ class CentralController
         if (is_null($status)) {
             return DB::table('atendimento')
                 ->where('status', '<>', 'N/A URA')
-                ->where('data_inclusao', '=', $data)
+                ->where('data_inclusao',$data)
                 ->count();
 
         }
         return DB::table('atendimento')
-            ->where('status', '=', $status)
-            ->where('data_inclusao', '=', $data)
+            ->where('status',$status)
+            ->where('data_inclusao',$data)
             ->count();
     }
 
@@ -36,7 +36,7 @@ class CentralController
     private function Media($data, $status, $hora_inicial, $hora_final)
     {
         $tempo_seconds = Atendimento::whereDate('data_inclusao', $data)
-            ->where('status', '=', $status)
+            ->where('status',$status)
             ->whereNotNull($hora_inicial)
             ->whereNotNull($hora_final)
             ->get()
@@ -55,8 +55,9 @@ class CentralController
         // Denifição dos status de atendimento
         $emEspera = 'EM ESPERA';
         $emAtendimento = 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO';
-        $perdida = 'PERDIDA';
+        $perdido = 'PERDIDO';
         $notUra = 'N/A URA'; #Não entrou na URA
+        $finalizado = 'FINALIZADO';
         // Define o fuso horário
         date_default_timezone_set('America/Sao_Paulo');
 
@@ -66,12 +67,12 @@ class CentralController
         // Consulta a quantidade de atendimentos por status
         $fila_qtd = $this->quantidade($data_atual, $emEspera);
         $atendendo_qtd = $this->quantidade($data_atual, $emAtendimento);
-        $perdidas_qtd = $this->quantidade($data_atual, $perdida);
+        $perdidas_qtd = $this->quantidade($data_atual, $perdido);
         $total = $this->quantidade($data_atual);
 
         // Consulta os registros de atendimentos na fila de espera
         $fila_registros = DB::table('atendimento')
-            ->where('status', '=', 'EM ESPERA')
+            ->where('status', '=',  $emEspera)
             ->where('data_inclusao', '=', $data_atual)
             ->orderBy('hora_chamada')
             ->get();
@@ -97,7 +98,7 @@ class CentralController
         // Consulta os registros de atendimentos em andamento
         $atend_registros = DB::table('atendimento')
             ->join('colaborador', 'atendimento.id_ramal', '=', 'colaborador.id')
-            ->where('atendimento.status', '=', 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO')
+            ->where('atendimento.status', '=', $emAtendimento)
             ->where('atendimento.data_inclusao', '=', $data_atual)
             ->orderBy('atendimento.hora_atendimento')
             ->get();
@@ -119,7 +120,7 @@ class CentralController
 
         // Consulta os registros de atendimentos perdidos
         $perd_registros = DB::table('atendimento')
-            ->where('status', '=', 'PERDIDO')
+            ->where('status',$perdido)
             ->where('data_inclusao', '=', $data_atual)
             ->where('ura', '<>', 'ADM')
             ->orderBy('hora_chamada', 'desc')
@@ -146,15 +147,15 @@ class CentralController
         $media_tempo_desistencia = '00:00:00';
         $maior_tempo_espera = '00:00:00';
         if($total > 0){
-            $media_tempo_espera = $this->Media($data_atual, 'FINALIZADO', 'hora_chamada', 'hora_atendimento');
-            $media_tempo_atendimento = $this->Media($data_atual, 'FINALIZADO', 'hora_atendimento', 'hora_desliga');
+            $media_tempo_espera = $this->Media($data_atual, $finalizado, 'hora_chamada', 'hora_atendimento');
+            $media_tempo_atendimento = $this->Media($data_atual, $finalizado, 'hora_atendimento', 'hora_desliga');
             if($perdidas_qtd > 0){
-                $media_tempo_desistencia = $this->Media($data_atual, 'PERDIDO', 'hora_chamada', 'hora_desliga');
+                $media_tempo_desistencia = $this->Media($data_atual, $perdido, 'hora_chamada', 'hora_desliga');
             }
 
             // Calcula o maior tempo de espera considerando os que foram e não foram atendidos
             $maior_tempo_espera_seconds = Atendimento::whereDate('data_inclusao', $data_atual)
-                ->where('status', '=', 'FINALIZADO')
+                ->where('status', $finalizado)
                 ->whereNotNull('hora_chamada')
                 ->whereNotNull('hora_atendimento')
                 ->get()
