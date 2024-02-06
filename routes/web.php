@@ -2,13 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginAndRegisterController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CentralController;
 use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\AcessoController;
+use App\Http\Controllers\Auth\LoginController;
 
-Route::get('/login', [LoginAndRegisterController::class, 'showLoginAndRegisterForm'])->name('login');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginAndRegisterController::class, 'login']);
 Route::post('/logout', [LoginAndRegisterController::class, 'logout'])->name('logout');
 
@@ -70,3 +70,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [RelatorioController::class, 'showRelatorio'])->name('relatorios.post');
     });
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
