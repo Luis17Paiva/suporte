@@ -49,22 +49,6 @@ class CentralController
 
         return gmdate('H:i:s', $tempo_seconds);
     }
-    private function calcularMediaTempo($data, $status, $hora_inicial, $hora_final)
-    {
-        $tempo_seconds = Atendimento::whereDate('data_inclusao', $data)
-            ->where('status', '=', $status)
-            ->whereNotNull($hora_inicial)
-            ->whereNotNull($hora_final)
-            ->get()
-            ->map(function ($atendimento) use ($hora_inicial, $hora_final) {
-                $hora_inicio = new DateTime($atendimento->{$hora_inicial});
-                $hora_fim = new DateTime($atendimento->{$hora_final});
-                return $hora_fim->getTimestamp() - $hora_inicio->getTimestamp();
-            })
-            ->avg();
-
-        return gmdate('H:i:s', $tempo_seconds);
-    }
 
     public function result()
     {
