@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginAndRegisterController;
 use App\Http\Controllers\CentralController;
 use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\RelatorioController;
