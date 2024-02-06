@@ -1,6 +1,6 @@
 <?php
 
-require 'home/suportels/Central/vendor/autoload.php';
+require_once 'var/www/suporte/vendor/autoload.php';
 
 use PAMI\Client\Impl\ClientImpl as PamiClient;
 use PAMI\Message\Action\LogoffAction;

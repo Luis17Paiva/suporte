@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Função para fazer a requisição POST para registrar o acesso
     const registrarAcesso = (acessoId) => {
-        axios.post(`/suporte/public/registrar-acesso/${acessoId}`)
+        axios.post(window.location.pathname + '/' + acessoId)
             .then(response => {
                 
             })
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const endDate = $(this).find('#data_fim').val();
         const acessoId = $(this).data('acesso-id');
 
-        axios.get('/suporte/public/historico-acessos/' + acessoId, {
+        axios.get(window.location.pathname + '/historico-acessos/' + acessoId, {
             params: {
                 startDate: startDate,
                 endDate: endDate
