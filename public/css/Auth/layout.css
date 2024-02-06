@@ -8,15 +8,16 @@
     --background-color: #f0f0f0;
     --primary-color: #444;
     --input-color: #acacac;
-    --primary-color-light: #F6F5FF;
+    --primary-color-light: #5995fd;
     --toggler-color: #DDD;
-    --text-color: #707070;
+    --text-color: #fff;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    text-decoration:none
 }
 
 body,
