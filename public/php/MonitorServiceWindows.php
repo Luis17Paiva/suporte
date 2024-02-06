@@ -1,18 +1,17 @@
 <?php
 
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use PAMI\Client\Impl\ClientImpl as PamiClient;
 use PAMI\Message\Action\LogoffAction;
 use PAMI\Message\Event\NewchannelEvent;
 use PAMI\Message\Event\HangupEvent;
 use PAMI\Message\Event\BridgeEnterEvent;
-use PAMI\Message\Event\BridgeEvent;
 
 
 header('Content-Type: text/html; charset=UTF-8');
 
-// Defina o idioma para pt-BR
+// Defini o idioma para pt-BR
 setlocale(LC_ALL, 'pt_BR.utf-8', 'Portuguese_Brazil.1252');
 
 // Define o fuso horário
@@ -27,17 +26,10 @@ $horarioTermino = '18:00:00';
 // Carrega as variáveis de ambiente do arquivo .env
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
-
-// Conecta ao banco de dados
-
-$pgHost = $_ENV['DB_HOST'];
-$pgPort = $_ENV['DB_PORT'];
-$pgDb = $_ENV['DB_DATABASE'];
-$pgUser = $_ENV['DB_USERNAME'];
-$pgPass =  $_ENV['DB_PASSWORD'];
-
-$dsn = "pgsql:host=$pgHost;port=$pgPort;dbname=$pgDb;user=$pgUser;password=$pgPass";
-$conn = new PDO($dsn);
+$managerHost = $_ENV['MANAGER_HOST'];
+$managerPort = $_ENV['MANAGER_PORT'];
+$managerUsername = $_ENV['MANAGER_USERNAME'];
+$managerPassword = $_ENV['MANAGER_PASSWORD'];
 
 // Opções de configuração para a conexão com o servidor AMI
 $opcoes = array(
@@ -49,9 +41,19 @@ $opcoes = array(
     'read_timeout' => 10000, // Valor em milissegundos
     'scheme' => 'tcp://'
 );
-
 // Instancia a conexão
 $conexao = new PamiClient($opcoes);
+
+// Conecta ao banco de dados
+
+$pgHost = $_ENV['DB_HOST'];
+$pgPort = $_ENV['DB_PORT'];
+$pgDb = $_ENV['DB_DATABASE'];
+$pgUser = $_ENV['DB_USERNAME'];
+$pgPass =  $_ENV['DB_PASSWORD'];
+
+$dsn = "pgsql:host=$pgHost;port=$pgPort;dbname=$pgDb;user=$pgUser;password=$pgPass";
+$conn = new PDO($dsn);
 
 // Função para fechar a conexão ao finalizar o script
 function shutdown() {
@@ -69,7 +71,6 @@ register_shutdown_function('shutdown');
 
 // Listener para eventos
 $conexao->registerEventListener(function ($event) use ($conn) {
-    global $conexao;
     global $uniqueId;
 
     if ($event instanceof NewchannelEvent) {
@@ -89,13 +90,12 @@ $conexao->registerEventListener(function ($event) use ($conn) {
 
         $hora = date('H:i:s');
         // Verifica se o número de telefone tem mais de 7 dígitos (indicando uma ligação externa)
-        if (strlen($callerId) > 7  && !(($callerId === '<unknown>' || htmlspecialchars_decode($callerId) === '<unknown>') && $Extension === 's')
-        && $callerId != '+3031237744'){
+        if (strlen($callerId) > 7  && !(($callerId === '<unknown>' || $callerId === '&lt;unknown&gt;') && $Extension === 's')){
             // Extrai a parte antes do ponto na coluna id_asterisk
             $idAsterisk = substr($uniqueId, 0, strpos($uniqueId, '.'));
             
             // Verificar se o evento já foi registrado
-            $query = "SELECT id_asterisk FROM atendimentos WHERE id_asterisk = :uniqueId AND data_inclusao = :dataInclusao";
+            $query = "SELECT id_asterisk FROM atendimento WHERE id_asterisk = :uniqueId AND data_inclusao = :dataInclusao";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':uniqueId', $idAsterisk);
             $stmt->bindParam(':dataInclusao', $dataInclusao);
@@ -103,7 +103,7 @@ $conexao->registerEventListener(function ($event) use ($conn) {
 
             if ($stmt->rowCount() === 0) {
                 // Insere dados na tabela de atendimentos
-                $insertQuery = "INSERT INTO atendimentos (id_asterisk, ura, numero, hora_chamada, status, data_inclusao) 
+                $insertQuery = "INSERT INTO atendimento (id_asterisk, ura, numero, hora_chamada, status, data_inclusao) 
                                 VALUES (:id_asterisk, :ura, :numero, :hora_chamada, :status, :data_inclusao)";
                 
                 $insertStmt = $conn->prepare($insertQuery);
@@ -123,13 +123,12 @@ $conexao->registerEventListener(function ($event) use ($conn) {
                 
                 $insertStmt->execute();
             }
-            
+
         }else if(substr($callerId, 0, 1) === "2"){
-            echo "ID: $LinkedId -  CallerId: $callerId\n"; 
             // Identifica se ligação foi para o administrativo
             $dataInclusao = date('Y-m-d');
 
-            $updateQuery = "UPDATE atendimentos SET ura = :ura
+            $updateQuery = "UPDATE atendimento SET ura = :ura
                             WHERE id_asterisk = :uniqueId AND data_inclusao = :dataInclusao";
             $updateStmt = $conn->prepare($updateQuery);
             $ura = 'ADM';
@@ -139,8 +138,6 @@ $conexao->registerEventListener(function ($event) use ($conn) {
             $updateStmt->execute();
 
         }
-        $teste = substr($callerId, 0, 1);
-        echo "teste: $teste\n";
 
     } elseif ($event instanceof BridgeEnterEvent) {
         // Chamada atendida
@@ -154,7 +151,7 @@ $conexao->registerEventListener(function ($event) use ($conn) {
         $atendendoRamal = $event->getCallerIDNum();
   
         // Verificar se o evento existe no banco
-        $query = "SELECT id_asterisk FROM atendimentos WHERE id_asterisk = :uniqueId";
+        $query = "SELECT id_asterisk FROM atendimento WHERE id_asterisk = :uniqueId";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':uniqueId', $idAsterisk);
         //$stmt->bindParam(':dataInclusao', $dataInclusao);
@@ -165,7 +162,7 @@ $conexao->registerEventListener(function ($event) use ($conn) {
             $ramal = $event->getConnectedLineNum();
             
             if(!(strlen($ramal) > 7)) {
-                $updateQuery = "UPDATE atendimentos SET status = :novoStatus, hora_atendimento = :hora, id_ramal = :ramal 
+                $updateQuery = "UPDATE atendimento SET status = :novoStatus, hora_atendimento = :hora, id_ramal = :ramal 
                                 WHERE id_asterisk = :uniqueId 
                                 AND NOT status = 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO' AND data_inclusao = :dataInclusao";
 
@@ -179,7 +176,7 @@ $conexao->registerEventListener(function ($event) use ($conn) {
                 $updateStmt->execute();
             }
             // Verifica se a ligação foi transferida para outro ramal
-            $query = "SELECT id_ramal FROM atendimentos WHERE id_asterisk = :uniqueId AND data_inclusao = :dataInclusao";
+            $query = "SELECT id_ramal FROM atendimento WHERE id_asterisk = :uniqueId AND data_inclusao = :dataInclusao";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':uniqueId', $idAsterisk);
             $stmt->bindParam(':dataInclusao', $dataInclusao);
@@ -197,7 +194,7 @@ $conexao->registerEventListener(function ($event) use ($conn) {
                     } else {
                         $ura = 'SUP';
                     }
-                    $updateQuery = "UPDATE atendimentos SET id_ramal = :ramal, ura = :ura
+                    $updateQuery = "UPDATE atendimento SET id_ramal = :ramal, ura = :ura
                                 WHERE id_asterisk = :uniqueId AND data_inclusao = :dataInclusao";
                     $updateStmt = $conn->prepare($updateQuery);
                     $updateStmt->bindParam(':ramal', $ramal);
@@ -210,14 +207,14 @@ $conexao->registerEventListener(function ($event) use ($conn) {
             }
         }
     }elseif ($event instanceof HangupEvent) {
-        // Chamada encerrada
+         // Chamada encerrada
         $uniqueId = $event->getUniqueID();
 
         // Extrai a parte antes do ponto (se houver) na coluna id_asterisk
         $idAsterisk = substr($uniqueId, 0, strpos($uniqueId, '.'));
 
         // Verificar se o evento existe no banco
-        $query = "SELECT id_asterisk FROM atendimentos WHERE id_asterisk = :uniqueId";
+        $query = "SELECT id_asterisk FROM atendimento WHERE id_asterisk = :uniqueId";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':uniqueId', $idAsterisk);
         //$stmt->bindParam(':dataInclusao', $dataInclusao);
@@ -229,8 +226,8 @@ $conexao->registerEventListener(function ($event) use ($conn) {
             $dataInclusao = date('Y-m-d');
 
 
-            // Verifica se a ligação teve tempo sufiente para entrar na URA
-            $query = "SELECT MAX(EXTRACT(EPOCH FROM :hora - hora_chamada)) AS tempo FROM atendimentos 
+            // Verifica se a ligação teve tempo sufiente para entrar na URA (20 segundos)
+            $query = "SELECT MAX(EXTRACT(EPOCH FROM :hora - hora_chamada)) AS tempo FROM atendimento 
                         WHERE id_asterisk = :uniqueId AND data_inclusao = :dataInclusao";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':uniqueId', $idAsterisk);
@@ -241,9 +238,9 @@ $conexao->registerEventListener(function ($event) use ($conn) {
             // Obtém o resultado da consulta
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($result['tempo'] > 15){
+            if($result['tempo'] > 20){
                 // Verifica se a ligação foi atendida
-                $query = "SELECT hora_atendimento FROM atendimentos WHERE id_asterisk = :uniqueId AND data_inclusao = :dataInclusao";
+                $query = "SELECT hora_atendimento FROM atendimento WHERE id_asterisk = :uniqueId AND data_inclusao = :dataInclusao";
                 $stmt = $conn->prepare($query);
                 $stmt->bindParam(':uniqueId', $idAsterisk);
                 $stmt->bindParam(':dataInclusao', $dataInclusao);
@@ -263,7 +260,7 @@ $conexao->registerEventListener(function ($event) use ($conn) {
                 // Extrai a parte antes do ponto (se houver) na coluna id_asterisk
                 $idAsterisk = substr($uniqueId, 0, strpos($uniqueId, '.'));
 
-                $updateQuery = "UPDATE atendimentos SET status = :novoStatus, hora_desliga = :hora 
+                $updateQuery = "UPDATE atendimento SET status = :novoStatus, hora_desliga = :hora 
                                 WHERE id_asterisk = :uniqueId AND data_inclusao = :dataInclusao";
                 $updateStmt = $conn->prepare($updateQuery);
                 $updateStmt->bindParam(':uniqueId', $idAsterisk);
@@ -277,8 +274,8 @@ $conexao->registerEventListener(function ($event) use ($conn) {
                 // Extrai a parte antes do ponto (se houver) na coluna id_asterisk
                 $idAsterisk = substr($uniqueId, 0, strpos($uniqueId, '.'));
 
-                $updateQuery = "UPDATE atendimentos SET status = :novoStatus, hora_desliga = :hora 
-                                WHERE id_asterisk = :uniqueId AND hora_desliga IS NULL AND data_inclusao = :dataInclusao";
+                $updateQuery = "UPDATE atendimento SET status = :novoStatus, hora_desliga = :hora 
+                                WHERE id_asterisk = :uniqueId AND data_inclusao = :dataInclusao";
                 $updateStmt = $conn->prepare($updateQuery);
                 $updateStmt->bindParam(':uniqueId', $idAsterisk);
                 $updateStmt->bindParam(':novoStatus', $novoStatus);
