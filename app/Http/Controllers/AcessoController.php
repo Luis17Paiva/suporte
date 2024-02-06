@@ -20,7 +20,7 @@ class AcessoController extends Controller
     {
         $acessos = Acesso::all();
 
-        return view('Acessos.acesso', compact('acessos'));
+        return view('Acessos.acesso', compact($acessos));
     }
 
     public function create()
@@ -44,7 +44,7 @@ class AcessoController extends Controller
     {
         $acesso = Acesso::find($id);
 
-        return view('Acessos.edit', compact('acesso'));
+        return view('Acessos.edit', compact($acesso));
     }
 
     public function update($id)

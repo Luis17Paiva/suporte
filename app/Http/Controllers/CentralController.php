@@ -5,47 +5,54 @@ namespace App\Http\Controllers;
 use App\Models\Atendimento;
 use Illuminate\Support\Facades\DB;
 use DateTime;
-use Illuminate\Http\Request;
 
 class CentralController
 {
 
+   
     public function index()
     {
         return view("Central/central");
     }
 
+    //Retorna a quantidade de ligações na data e status informado
+    private function quantidade($data,$status = NULL){
+        
+        if(is_null($status)){
+            return DB::table('atendimento')
+            ->where('status', '<>', 'N/A URA')
+            ->where('data_inclusao', '=', $data)
+            ->count();
+
+        }
+        return DB::table('atendimento')
+            ->where('status', '=', $status)
+            ->where('data_inclusao', '=', $data)
+            ->count();
+    }
+
+    protected function media($status,$data){
+
+
+    }
     public function result()
-    {
+    {   
+        // Denifição dos status de atendimento
+        $emEspera = 'EM ESPERA';
+        $emAtendimento = 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO';
+        $perdida = 'PERDIDA';
+        $notUra = 'N/A URA'; #Não entrou na URA
         // Define o fuso horário
         date_default_timezone_set('America/Sao_Paulo');
 
         // Obtém a data atual
         $data_atual = date('Y-m-d');
 
-        // Consulta a quantidade de atendimentos na fila de espera
-        $fila_qtd = DB::table('atendimento')
-            ->where('status', '=', 'EM ESPERA')
-            ->where('data_inclusao', '=', $data_atual)
-            ->count();
-
-        // Consulta a quantidade de atendimentos em andamento
-        $atendendo_qtd = DB::table('atendimento')
-            ->where('status', '=', 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO')
-            ->where('data_inclusao', '=', $data_atual)
-            ->count();
-
-        // Consulta a quantidade de atendimentos perdidos
-        $perdidas_qtd = DB::table('atendimento')
-            ->where('status', '=', 'PERDIDO')
-            ->where('data_inclusao', '=', $data_atual)
-            ->count();
-
-        // Consulta a quantidade de atendimentos total
-        $total = DB::table('atendimento')
-            ->where('status', '<>', 'N/A URA')
-            ->where('data_inclusao', '=', $data_atual)
-            ->count();
+        // Consulta a quantidade de atendimentos na fila por status
+        $fila_qtd = $this->quantidade($data_atual,$emEspera);
+        $atendendo_qtd = $this->quantidade($data_atual,$emAtendimento);
+        $perdidas_qtd = $this->quantidade($data_atual,$perdida);
+        $total = $this->quantidade($data_atual);
 
         // Consulta os registros de atendimentos na fila de espera
         $fila_registros = DB::table('atendimento')
