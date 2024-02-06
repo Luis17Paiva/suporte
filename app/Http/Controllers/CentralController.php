@@ -140,7 +140,7 @@ class CentralController
             );
         }
 
-        // Calcula a media do tempo de espera
+        // Calcula as medias se houver ao menos uma ligação
         $media_tempo_espera = '00:00:00';
         $media_tempo_atendimento = '00:00:00';
         $media_tempo_desistencia = '00:00:00';
