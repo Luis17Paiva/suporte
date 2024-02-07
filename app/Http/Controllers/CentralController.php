@@ -72,8 +72,8 @@ class CentralController
 
         // Consulta os registros de atendimentos na fila de espera
         $fila_registros = DB::table('atendimento')
-            ->where('status', '=',  $emEspera)
-            ->where('data_inclusao', '=', $data_atual)
+            ->where('status', $emEspera)
+            ->where('data_inclusao',$data_atual)
             ->orderBy('hora_chamada')
             ->get();
 
