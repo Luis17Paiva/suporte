@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class AcessoController extends Controller
 {  
-    protected $colaborador;
+    protected $acesso;
     protected $request;
     public function __construct(Acesso $acesso, Request $request)
     {
@@ -20,12 +20,12 @@ class AcessoController extends Controller
     {
         $acessos = Acesso::all();
 
-        return view('Acessos.acesso', compact('acessos'));
+        return view('acessos.acesso', compact('acessos'));
     }
 
     public function create()
     {
-        return view('Acessos.create');
+        return view('acessos.create');
     }
 
     public function store()
@@ -44,7 +44,7 @@ class AcessoController extends Controller
     {
         $acesso = Acesso::find($id);
 
-        return view('Acessos.edit', compact('acesso'));
+        return view('acessos.edit', compact('acesso'));
     }
 
     public function update($id)
@@ -93,6 +93,7 @@ class AcessoController extends Controller
         $acessoHist = new AcessoHist([
             'usuario' => $usuario,
             'acesso_id' => $acessoId,
+            
         ]);
 
         // Salve os dados no banco de dados

@@ -1,4 +1,4 @@
-@extends('Sidebar/sidebar')
+@extends('sidebar/sidebar')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/colaboradores/colaboradores.js') }}"></script>
 <link href="{{ asset('css/Colaboradores/colaboradores.css') }}" rel="stylesheet">

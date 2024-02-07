@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Função para fazer a requisição POST para registrar o acesso
     const registrarAcesso = (acessoId) => {
-        axios.post(window.location.pathname + '/' + acessoId)
+        axios.post(window.location.pathname + '/registrar-acesso/' + acessoId)
             .then(response => {
                 
             })

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-@extends('Sidebar/sidebar')
+@extends('sidebar/sidebar')
 @section('content')
 <html>
 <head>
     <title>Central</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet" />
-    <link href="{{ asset('css/Central/Central2.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/central/central.css') }}" rel="stylesheet" />
     <link rel="shortcut icon" href="#" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />

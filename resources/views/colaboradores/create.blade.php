@@ -1,5 +1,5 @@
-@extends('Sidebar/sidebar')
-<link href="{{ asset('css/Colaboradores/create.css') }}" rel="stylesheet">
+@extends('sidebar/sidebar')
+<link href="{{ asset('css/colaboradores/create.css') }}" rel="stylesheet">
 
 @section('content')
     <title>Adicionar colaborador</title>

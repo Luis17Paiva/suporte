@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!---CSS-->
-    <link href="{{ asset('css/Sidebar/sidebar.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/sidebar/sidebar.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/boxicons-master/css/boxicons.min.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/Sidebar/sidebar.js') }}" defer></script>
+    <script src="{{ asset('js/sidebar/sidebar.js') }}" defer></script>
 
 </head>
 

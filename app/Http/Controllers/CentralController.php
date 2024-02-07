@@ -12,7 +12,7 @@ class CentralController
 
     public function index()
     {
-        return view("Central/central");
+        return view("central/central");
     }
 
     //Retorna a quantidade de ligações na data e status informado

@@ -11,7 +11,7 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="{{ asset('css/Auth/layout.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/auth/layout.css') }}" rel="stylesheet" />
 
     <!-- Scripts -->
     

@@ -1,8 +1,8 @@
-@extends('Sidebar/sidebar')
+@extends('sidebar/sidebar')
 
 @section('content')
-    <link href="{{ asset('css/Relatorios/relatorios.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/Relatorios/relatorios.js') }}"></script>
+    <link href="{{ asset('css/relatorios/relatorios.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/relatorios/relatorios.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <div class="box">

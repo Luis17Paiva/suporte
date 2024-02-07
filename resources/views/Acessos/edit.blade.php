@@ -1,6 +1,6 @@
 <!-- resources/views/colaboradores/editar.blade.php -->
-@extends('Sidebar/sidebar')
-<link href="{{ asset('css/Acessos/edit.css') }}" rel="stylesheet">
+@extends('sidebar/sidebar')
+<link href="{{ asset('css/acessos/edit.css') }}" rel="stylesheet">
 @section('content')
     <form method="POST" action="{{ route('acessos.update', $acesso->id) }}">
         <div class="box">

@@ -25,7 +25,7 @@ class RelatorioController extends Controller
         $dataAtual = now();
         $dataInicio = $this->request->input('data_inicio') ? Carbon::parse($this->request->input('data_inicio'))->startOfDay() : $dataAtual;
         $dataFim = $this->request->input('data_fim') ? Carbon::parse($this->request->input('data_fim'))->endOfDay() : $dataAtual;
-        return view('Relatorios.relatorios', compact('dataAtual', 'dataInicio', 'dataFim'));
+        return view('relatorios.relatorios', compact('dataAtual', 'dataInicio', 'dataFim'));
     }
     public function showRelatorio()
     {
@@ -58,9 +58,9 @@ class RelatorioController extends Controller
 
                 // Verifica se a variável $dataInicio é diferente de null
                 if ($dataInicio !== null) {
-                    return view('Relatorios.relatorios', compact('relatorios', 'dataAtual', 'dataInicio', 'dataFim'));
+                    return view('relatorios.relatorios', compact('relatorios', 'dataAtual', 'dataInicio', 'dataFim'));
                 } else {
-                    return view('Relatorios.relatorios', compact('relatorios', 'dataAtual', 'dataFim'));
+                    return view('relatorios.relatorios', compact('relatorios', 'dataAtual', 'dataFim'));
                 }
             }
         } else {
