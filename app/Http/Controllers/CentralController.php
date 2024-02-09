@@ -15,7 +15,7 @@ class CentralController
         return view("Central/central");
     }
 
-    //Retorna a quantidade de ligações na data e status informado
+    // Retorna a quantidade de ligações na data e status informado
     private function quantidade($data, $status = NULL)
     {
 
@@ -32,7 +32,7 @@ class CentralController
             ->count();
     }
 
-    //Retorna a media de ligações na data por status
+    // Retorna a media de ligações na data por status
     private function Media($data, $status, $hora_inicial, $hora_final)
     {
         $tempo_seconds = Atendimento::whereDate('data_inclusao', $data)
@@ -56,7 +56,6 @@ class CentralController
         $emEspera = 'EM ESPERA';
         $emAtendimento = 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO';
         $perdido = 'PERDIDO';
-        $notUra = 'N/A URA'; #Não entrou na URA
         $finalizado = 'FINALIZADO';
         // Define o fuso horário
         date_default_timezone_set('America/Sao_Paulo');
@@ -68,6 +67,7 @@ class CentralController
         $fila_qtd = $this->quantidade($data_atual, $emEspera);
         $atendendo_qtd = $this->quantidade($data_atual, $emAtendimento);
         $perdidas_qtd = $this->quantidade($data_atual, $perdido);
+        $finalizado_qtd = $this->quantidade($data_atual, $finalizado);
         $total = $this->quantidade($data_atual);
 
         // Consulta os registros de atendimentos na fila de espera
@@ -141,12 +141,12 @@ class CentralController
             );
         }
 
-        // Calcula as medias se houver ao menos uma ligação
+        // Calcula as medias se houver ao menos uma ligação finalizada
         $media_tempo_espera = '00:00:00';
         $media_tempo_atendimento = '00:00:00';
         $media_tempo_desistencia = '00:00:00';
         $maior_tempo_espera = '00:00:00';
-        if($total > 0){
+        if($finalizado_qtd > 0){
             $media_tempo_espera = $this->Media($data_atual, $finalizado, 'hora_chamada', 'hora_atendimento');
             $media_tempo_atendimento = $this->Media($data_atual, $finalizado, 'hora_atendimento', 'hora_desliga');
             if($perdidas_qtd > 0){

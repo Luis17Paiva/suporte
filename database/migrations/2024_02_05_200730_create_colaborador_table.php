@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->boolean('excluido')->default(false);
-            // Adicione outros campos conforme necessário
             $table->timestamps();
         });
     }

@@ -15,6 +15,7 @@ class AcessoController extends Controller
     {
         $this->acesso = $acesso;
         $this->request = $request;
+        $this->middleware('auth');
     } 
     public function index()
     {
