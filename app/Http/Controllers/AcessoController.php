@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class AcessoController extends Controller
 {  
-    protected $colaborador;
+    protected $acesso;
     protected $request;
     public function __construct(Acesso $acesso, Request $request)
     {
