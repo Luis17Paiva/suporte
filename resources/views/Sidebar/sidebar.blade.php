@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!---CSS-->
-    <link href="{{ asset('css/Sidebar/sidebar.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/sidebar/sidebar.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/boxicons-master/css/boxicons.min.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
 
@@ -39,11 +39,11 @@
                     <input type="search" placeholder="Procurar...">
                 </li>
                 <ul class="menu-links">
-                    @if (Route::has('central'))
-                        <li class="nav-link @if (request()->is('central')) active @endif">
-                            <a href="{{ route('central') }}">
+                    @if (Route::has('atendimentos'))
+                        <li class="nav-link @if (request()->is('atendimentos')) active @endif">
+                            <a href="{{ route('atendimentos') }}">
                                 <i class='bx bx-phone icon'></i>
-                                <span class="text nav-text">Central</span>
+                                <span class="text nav-text">Atendimentos</span>
                             </a>
                         </li>
                     @endif

@@ -1,5 +1,5 @@
-@extends('Sidebar/sidebar')
-<link href="{{ asset('css/Acessos/create.css') }}" rel="stylesheet">
+@extends('sidebar/sidebar')
+<link href="{{ asset('css/acessos/create.css') }}" rel="stylesheet">
 @section('content')
     <title>Adicionar acesso</title>
     <div class="box">

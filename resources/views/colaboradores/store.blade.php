@@ -1,4 +1,4 @@
-@extends('Sidebar/sidebar')
+@extends('sidebar/sidebar')
 
 @section('content')
     <h1>Colaborador Criado</h1>

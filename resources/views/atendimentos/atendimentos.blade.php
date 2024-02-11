@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-@extends('Sidebar/sidebar')
+@extends('sidebar/sidebar')
 @section('content')
 <html>
 <head>
     <title>Central</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet" />
-    <link href="{{ asset('css/Central/Central2.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/atendimentos/atendimentos.css') }}" rel="stylesheet" />
     <link rel="shortcut icon" href="#" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="{{ asset('js/central/script.js') }}" defer></script>
+    <script src="{{ asset('js/atendimentos/script.js') }}" defer></script>
 </head>
 <body>
     <section class="central">
