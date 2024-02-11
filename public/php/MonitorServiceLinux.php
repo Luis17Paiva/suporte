@@ -7,6 +7,7 @@ use PAMI\Message\Action\LogoffAction;
 use PAMI\Message\Event\NewchannelEvent;
 use PAMI\Message\Event\HangupEvent;
 use PAMI\Message\Event\BridgeEnterEvent;
+use App\Models\Atendimento;
 
 
 header('Content-Type: text/html; charset=UTF-8');
@@ -91,7 +92,6 @@ $conexao->registerEventListener(function ($event) use ($conn) {
         $hora = date('H:i:s');
         // Verifica se o número de telefone tem mais de 7 dígitos (indicando uma ligação externa)
         if (strlen($callerId) > 7  && !(($callerId === '<unknown>' || $callerId === '&lt;unknown&gt;') && $Extension === 's')){
-            // Extrai a parte antes do ponto na coluna id_asterisk
             $idAsterisk = substr($uniqueId, 0, strpos($uniqueId, '.'));
             
             // Verificar se o evento já foi registrado
@@ -144,17 +144,13 @@ $conexao->registerEventListener(function ($event) use ($conn) {
         $uniqueId = $event->getUniqueID();
         $dataInclusao = date('Y-m-d');
         $hora = date('H:i:s');
-
-        // Extrai a parte antes do ponto (se houver) na coluna id_asterisk
         $idAsterisk = substr($uniqueId, 0, strpos($uniqueId, '.'));
-
         $atendendoRamal = $event->getCallerIDNum();
   
         // Verificar se o evento existe no banco
         $query = "SELECT id_asterisk FROM atendimento WHERE id_asterisk = :uniqueId";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':uniqueId', $idAsterisk);
-        //$stmt->bindParam(':dataInclusao', $dataInclusao);
         $stmt->execute();
 
         if ($stmt->rowCount() != 0) {
