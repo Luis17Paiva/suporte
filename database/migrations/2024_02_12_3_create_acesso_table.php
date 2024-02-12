@@ -24,7 +24,8 @@ class CreateAcessoTable extends Migration
     }
 
     public function down()
-    {
+    {   
+        Schema::dropIfExists('acesso_hist');
         Schema::dropIfExists('acesso');
     }
 };

@@ -31,7 +31,7 @@ class AtendimentoController extends Controller
 
     public function index()
     {
-        return view("Atendimentos/atendimentos");
+        return view("atendimentos/atendimentos");
     }
     // Registra um novo atendimento
     public function storeAtendimento($data)
