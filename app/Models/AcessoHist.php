@@ -9,13 +9,26 @@ class AcessoHist extends Model
 {
     use HasFactory;
 
-    // Defina os timestamps como públicos
     public $timestamps = true;
-    protected $table = 'acesso_hist'; // Nome da tabela no banco de dados
+    protected $table = 'acesso_hist'; 
     protected $primaryKey = 'id'; 
     protected $fillable = [
-        'usuario', 
-        'acesso_id'
+        'id_acesso', 
+        'id_colaborador',
+        'excluido'
     ]; 
-  
+    protected $casts = [
+        'excluido' => 'boolean'
+    ];
+
+    public function acesso()
+    {
+        return $this->belongsTo(Acesso::class, 'id_acesso');
+    }
+
+    public function colaborador()
+    {
+        return $this->belongsTo(Colaborador::class, 'id_colaborador');
+    }
+
 }

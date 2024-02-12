@@ -34,7 +34,7 @@ class AtendimentoController extends Controller
         return view("Atendimentos/atendimentos");
     }
     // Registra um novo atendimento
-    public function store($data)
+    public function storeAtendimento($data)
     {
 
         $validator = Validator::make($data->all(), [
@@ -100,12 +100,13 @@ class AtendimentoController extends Controller
         }
     }
     // Altera a URA
-    public function updateUra($id_asterisk,$ura){
+    public function updateUra($id_asterisk,$ura,$ramal){
 
         // Valida os daddos
         $validator = Validator::make(['id_asterisk' => $id_asterisk, 'ura' => $ura], [
             'id_asterisk' => ['required', 'string', 'max:25'],
-            'ura' => ['required', 'string', 'max:5']
+            'ura' => ['required', 'string', 'max:5'],
+            'ramal'=> ['required','int','max:10']
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
@@ -114,13 +115,14 @@ class AtendimentoController extends Controller
         // Altera status e hora 
         $atendimento = Atendimento::where('id_asterisk', $id_asterisk)->firstOrFail();
         $atendimento->$ura = $ura;
+        $atendimento->$ramal = $ramal;
         return response()->json(['Ura Alterada para '. $ura],200);
     }
 
 
     //// CODIGO ABAIXO É TEMPORÁRIO
     // Retorna a quantidade de ligações na data e status informado
-    private function quantidade($data, $status = NULL)
+    private function quantidadeAtendimentos($data, $status = NULL)
     {
 
         if (is_null($status)) {
@@ -137,7 +139,7 @@ class AtendimentoController extends Controller
     }
 
     // Retorna a media de ligações na data por status
-    private function Media($data, $status, $hora_inicial, $hora_final)
+    private function mediaAtendimentos($data, $status, $hora_inicial, $hora_final)
     {
         $tempo_seconds = Atendimento::whereDate('data_inclusao', $data)
             ->where('status',$status)
@@ -150,6 +152,23 @@ class AtendimentoController extends Controller
                 return $hora_fim->getTimestamp() - $hora_inicio->getTimestamp();
             })
             ->avg();
+
+        return gmdate('H:i:s', $tempo_seconds);
+    }
+    // Retorna a maior diferença de tempo entre a hora final - hora inicial pelo status e data informada
+    private function maxAtendimentos($data, $status, $hora_inicial, $hora_final)
+    {
+        $tempo_seconds = Atendimento::whereDate('data_inclusao', $data)
+            ->where('status',$status)
+            ->whereNotNull($hora_inicial)
+            ->whereNotNull($hora_final)
+            ->get()
+            ->map(function ($atendimento) use ($hora_inicial, $hora_final) {
+                $hora_inicio = new DateTime($atendimento->{$hora_inicial});
+                $hora_fim = new DateTime($atendimento->{$hora_final});
+                return $hora_fim->getTimestamp() - $hora_inicio->getTimestamp();
+            })
+            ->max();
 
         return gmdate('H:i:s', $tempo_seconds);
     }
@@ -168,11 +187,11 @@ class AtendimentoController extends Controller
         $data_atual = date('Y-m-d');
 
         // Consulta a quantidade de atendimentos por status
-        $fila_qtd = $this->quantidade($data_atual, $emEspera);
-        $atendendo_qtd = $this->quantidade($data_atual, $emAtendimento);
-        $perdidas_qtd = $this->quantidade($data_atual, $perdido);
-        $finalizado_qtd = $this->quantidade($data_atual, $finalizado);
-        $total = $this->quantidade($data_atual);
+        $fila_qtd = $this->quantidadeAtendimentos($data_atual, $emEspera);
+        $atendendo_qtd = $this->quantidadeAtendimentos($data_atual, $emAtendimento);
+        $perdidas_qtd = $this->quantidadeAtendimentos($data_atual, $perdido);
+        $finalizado_qtd = $this->quantidadeAtendimentos($data_atual, $finalizado);
+        $total = $this->quantidadeAtendimentos($data_atual);
 
         // Consulta os registros de atendimentos na fila de espera
         $fila_registros = DB::table('atendimento')
@@ -251,26 +270,13 @@ class AtendimentoController extends Controller
         $media_tempo_desistencia = '00:00:00';
         $maior_tempo_espera = '00:00:00';
         if($finalizado_qtd > 0){
-            $media_tempo_espera = $this->Media($data_atual, $finalizado, 'hora_chamada', 'hora_atendimento');
-            $media_tempo_atendimento = $this->Media($data_atual, $finalizado, 'hora_atendimento', 'hora_desliga');
+            $media_tempo_espera = $this->mediaAtendimentos($data_atual, $finalizado, 'hora_chamada', 'hora_atendimento');
+            $media_tempo_atendimento = $this->mediaAtendimentos($data_atual, $finalizado, 'hora_atendimento', 'hora_desliga');
             if($perdidas_qtd > 0){
-                $media_tempo_desistencia = $this->Media($data_atual, $perdido, 'hora_chamada', 'hora_desliga');
+                $media_tempo_desistencia = $this->mediaAtendimentos($data_atual, $perdido, 'hora_chamada', 'hora_desliga');
             }
-
             // Calcula o maior tempo de espera considerando os que foram e não foram atendidos
-            $maior_tempo_espera_seconds = Atendimento::whereDate('data_inclusao', $data_atual)
-                ->where('status', $finalizado)
-                ->whereNotNull('hora_chamada')
-                ->whereNotNull('hora_atendimento')
-                ->get()
-                ->map(function ($atendimento) {
-                    $hora_atendimento = new DateTime($atendimento->hora_atendimento);
-                    $hora_chamada = new DateTime($atendimento->hora_chamada);
-                    // Calcula a diferença entre as horas de atendimento e chamada ou desligamento em segundos
-                 return $hora_atendimento->getTimestamp() - $hora_chamada->getTimestamp(); // Retorna apenas os segundos
-                })
-                ->max();
-            $maior_tempo_espera = gmdate('H:i:s', $maior_tempo_espera_seconds);
+            $maior_tempo_espera = $this->maxAtendimentos($data_atual,$finalizado,'hora_chamada','hora_atendimento');
         }
 
         $data = array(

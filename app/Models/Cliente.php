@@ -5,21 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Colaborador extends Model
+class Cliente extends Model
 {
     use HasFactory;
-    protected $table = 'colaborador';
-    protected $primaryKey = 'id';
+
+    protected $table = 'cliente';
     public $timestamps = true;
 
     protected $fillable = [
-        'nome',
-        'id_ramal',
+        'nome', 
         'excluido'
     ];
 
-    public function atendimentos()
+    protected $casts = [
+        'excluido' => 'boolean'
+    ];
+
+    public function contatos()
     {
-        return $this->hasMany(Atendimento::class, 'id_colaborador');
+        return $this->hasMany(ClienteContato::class, 'id_cliente');
     }
 }

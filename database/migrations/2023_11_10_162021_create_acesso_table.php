@@ -14,22 +14,17 @@ class CreateAcessoTable extends Migration
     {
         Schema::create('acesso', function (Blueprint $table) {
             $table->id();
-            $table->string('empresa');
-            $table->string('tipo_acesso');
-            $table->string('acesso_id');
-            $table->string('senha');
+            $table->foreignId('id_cliente')->constrained('cliente');
             $table->boolean('excluido')->default(false);
-            $table->timestamps(); 
+            $table->string('acesso_tipo', 30)->nullable();
+            $table->string('acesso_id', 50)->nullable();
+            $table->string('acesso_pass', 50)->nullable();
+            $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('acesso');
     }
-}
+};

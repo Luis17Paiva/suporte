@@ -10,12 +10,26 @@ class Acesso extends Model
     use HasFactory;
     protected $table = 'acesso'; 
     protected $primaryKey = 'id'; 
+    public $timestamps = true;
     protected $fillable = [
-        'empresa',
-        'tipo_acesso',
+        'id_cliente',
+        'acesso_tipo',
         'acesso_id',
-        'senha',
+        'acesso_pass',
         'excluido'
     ];
+    protected $casts = [
+        'excluido' => 'boolean'
+    ];
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'id_cliente');
+    }
+
+    public function acessoHist()
+    {
+        return $this->hasMany(AcessoHist::class, 'id_acesso');
+    }
 }
 

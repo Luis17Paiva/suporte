@@ -6,24 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('colaborador', function (Blueprint $table) {
+        Schema::create('acesso_hist', function (Blueprint $table) {
             $table->id();
-            $table->string('nome', 50);
-            $table->integer('ramal');
+            $table->foreignId('id_acesso')->constrained('acesso');
             $table->boolean('excluido')->default(false);
+            $table->foreignId('id_colaborador')->constrained('colaborador');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('colaborador');
+        Schema::dropIfExists('acesso_hists');
     }
 };
