@@ -3,18 +3,122 @@
 namespace App\Http\Controllers;
 
 use App\Models\Atendimento;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use DateTime;
 
-class CentralController
+class AtendimentoController extends Controller
 {
+    protected $atendimento;
+    protected $request;
 
+    // Define o status
+    public $emEspera = 'EM ESPERA';
+    public $emAtendimento = 'EM ATENDIMENTO - AGUARDANDO DESLIGAMENTO';
+    public $perdido = 'PERDIDO';
+    public $finalizado = 'FINALIZADO';
+    public $desistiu = 'N/A URA';
+
+    // Cria uma string com todos os status
+    public $statusOptions;
+    public function __construct(Atendimento $atendimento, Request $request)
+    {
+        $this->atendimento = $atendimento;
+        $this->request = $request;
+        $this->statusOptions = implode(',', [$this->emAtendimento, $this->finalizado, $this->desistiu, $this->perdido]);
+    }
 
     public function index()
     {
-        return view("central/central");
+        return view("Atendimentos/atendimentos");
+    }
+    // Registra um novo atendimento
+    public function store($data)
+    {
+
+        $validator = Validator::make($data->all(), [
+            'numero' => ['required', 'string', 'max:15'],
+            'ura' => ['required', 'string', 'max:5'],
+            'id_asterisk' => ['required', 'string', 'max:25'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        $atendimento = new Atendimento;
+        $atendimento->numero = $data->input('numero');
+        $atendimento->ura = $data->input('ura');
+        $atendimento->hora_chamada = date('H:i:s');
+        $atendimento->id_asterisk = $data->input('id_asterisk');
+        $atendimento->status = $this->emEspera;
+        $atendimento->save();
+
+        return response()->json(['Atendimento criado com sucesso.'],200);
+    }
+    // Altera o status do atendimento
+    public function updateStatus($id_asterisk, $status = 'N/A URA')
+    {
+
+        // Valida os dados
+        $rules = [
+            'id_asterisk' => ['required,string,max:25'],
+            'status' => ['required,string,in:' . $this->statusOptions],
+        ];
+        $messages = [
+            'status.in' => 'O status fornecido é inválido.',
+        ];
+        $validator = Validator::make(compact('id_asterisk', 'status'), $rules, $messages);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        // Altera status e hora 
+        $atendimento = Atendimento::where('id_asterisk', $id_asterisk)->firstOrFail();
+        switch ($status) {
+            case $this->emAtendimento:
+                $atendimento->status = $status;
+                $atendimento->hora_atendimento = date('H:i:s');
+                $atendimento->save();
+                return response()->json(['Status alterado para: ' . $status],200);
+            case $this->finalizado:
+                $atendimento->status = $status;
+                $atendimento->hora_desliga = date('H:i:s');
+                $atendimento->save();
+                return response()->json(['Status alterado para: ' . $status],200);
+            case $this->perdido:
+                $atendimento->status = $this->perdido;
+                $atendimento->hora_desliga = date('H:i:s');
+                $atendimento->save();
+                return response()->json(['Status alterado para: '. $status],200);
+            default:
+                $atendimento->status = $status;
+                $atendimento->hora_desliga = date('H:i:s');
+                $atendimento->save();
+                return response()->json(['Status alterado para: '. $status],200);
+        }
+    }
+    // Altera a URA
+    public function updateUra($id_asterisk,$ura){
+
+        // Valida os daddos
+        $validator = Validator::make(['id_asterisk' => $id_asterisk, 'ura' => $ura], [
+            'id_asterisk' => ['required', 'string', 'max:25'],
+            'ura' => ['required', 'string', 'max:5']
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        // Altera status e hora 
+        $atendimento = Atendimento::where('id_asterisk', $id_asterisk)->firstOrFail();
+        $atendimento->$ura = $ura;
+        return response()->json(['Ura Alterada para '. $ura],200);
     }
 
+
+    //// CODIGO ABAIXO É TEMPORÁRIO
     // Retorna a quantidade de ligações na data e status informado
     private function quantidade($data, $status = NULL)
     {
@@ -186,6 +290,4 @@ class CentralController
         // Converte o array em formato JSON 
         return response()->json($data);
     }
-
 }
-

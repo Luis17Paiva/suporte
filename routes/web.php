@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CentralController;
+use App\Http\Controllers\AtendimentoController;
 use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\AcessoController;
@@ -18,10 +18,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{id}/edit', [AcessoController::class, 'edit'])->name('acessos.edit');
         Route::get('/historico-acessos/{acessoId}', [AcessoController::class, 'historicoAcessos']);
     });
-    // Rotas para o CentralController(GET)
-    Route::prefix('central')->group(function () {
-        Route::get('/', [CentralController::class, 'index'])->name('central');
-        Route::get('/result', [CentralController::class, 'result'])->name('central.result');
+    // Rotas para o AtendimentoController(GET)
+    Route::prefix('atendimentos')->group(function () {
+        Route::get('/', [AtendimentoController::class, 'index'])->name('atendimentos');
+        Route::get('/result', [AtendimentoController::class, 'result'])->name('atendimento.result');
     });
     // Rotas para o ColaboradorController(GET)
     Route::prefix('colaboradores')->group(function () {

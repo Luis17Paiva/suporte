@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('colaborador', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
+            $table->string('id_ramal');
             $table->boolean('excluido')->default(false);
-            // Adicione outros campos conforme necessário
             $table->timestamps();
         });
     }

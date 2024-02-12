@@ -40,11 +40,11 @@
                     <input type="search" placeholder="Procurar...">
                 </li>
                 <ul class="menu-links">
-                    @if (Route::has('central'))
-                        <li class="nav-link @if (request()->is('central')) active @endif">
-                            <a href="{{ route('central') }}">
+                    @if (Route::has('atendimentos'))
+                        <li class="nav-link @if (request()->is('atendimentos')) active @endif">
+                            <a href="{{ route('atendimentos') }}">
                                 <i class='bx bx-phone icon'></i>
-                                <span class="text nav-text">Central</span>
+                                <span class="text nav-text">Atendimentos</span>
                             </a>
                         </li>
                     @endif

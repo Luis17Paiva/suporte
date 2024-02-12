@@ -10,10 +10,11 @@ class Colaborador extends Model
     use HasFactory;
     protected $table = 'colaborador';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'nome',
-        'excluido',
+        'id_ramal',
+        'excluido'
     ];
 }

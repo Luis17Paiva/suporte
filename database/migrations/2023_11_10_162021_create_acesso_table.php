@@ -19,7 +19,7 @@ class CreateAcessoTable extends Migration
             $table->string('acesso_id');
             $table->string('senha');
             $table->boolean('excluido')->default(false);
-            $table->timestamps(); // Adiciona automaticamente colunas created_at e updated_at
+            $table->timestamps(); 
         });
     }
 

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->boolean('excluido')->default(false);
             $table->timestamps();
 
-            // Chave estrangeira para a tabela de ramais (opcional)
+            // Chave estrangeira para a tabela de ramais 
             // $table->foreign('id_ramal')->references('id')->on('ramais')->onDelete('set null');
 
           
