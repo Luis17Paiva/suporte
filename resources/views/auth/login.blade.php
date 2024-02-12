@@ -137,7 +137,7 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/Auth/login.js') }}"></script>
+    <script src="{{ asset('js/auth/login.js') }}"></script>
 </body>
 
 </html>

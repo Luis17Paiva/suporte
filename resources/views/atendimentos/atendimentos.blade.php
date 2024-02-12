@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-@extends('Sidebar/sidebar')
+@extends('sidebar/sidebar')
 @section('content')
 <html>
 <head>
