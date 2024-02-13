@@ -24,7 +24,7 @@
                     <h2 class="title">Login</h2>
                     <div class="input-field">
                         <i class="fas fa-user"></i>
-                        <input id="email1" type="text" placeholder="Email"
+                        <input id="email1" type="email" placeholder="Email"
                             class="form-control @error('email') is-invalid @enderror" name="email"
                             value="{{ old('email') }}" required autocomplete="email" autofocus>
                         @error('email1')
@@ -80,12 +80,12 @@
                     @enderror
                     <div class="input-field">
                         <i class="fas fa-envelope"></i>
-                        <input id="E-mail" type="email" placeholder="Email"
-                            class="form-control @error('email') is-invalid @enderror" name="E-mail"
+                        <input id="email" type="email" placeholder="Email"
+                            class="form-control @error('email') is-invalid @enderror" name="email"
                             value="{{ old('email') }}" required autocomplete="email">
 
                     </div>
-                    @error('E-mail')
+                    @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -93,15 +93,15 @@
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
                         <input id="password" type="password" placeholder="Senha"
-                            class="form-control @error('password') is-invalid @enderror" name="Senha" required
+                            class="form-control @error('password') is-invalid @enderror" name="password" required
                             autocomplete="new-password">
                     </div>
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
                         <input id="password-confirm" type="password" placeholder="Confirme sua senha"
-                            class="form-control" name="Senha_confirmation" required autocomplete="new-password">
+                            class="form-control" name="password_confirmation"  required autocomplete="new-password">
                     </div>
-                    @error('Senha')
+                    @error('password')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
