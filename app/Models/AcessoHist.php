@@ -14,7 +14,7 @@ class AcessoHist extends Model
     protected $primaryKey = 'id'; 
     protected $fillable = [
         'id_acesso', 
-        'id_colaborador',
+        'id_user',
         'excluido'
     ]; 
     protected $casts = [
@@ -26,9 +26,9 @@ class AcessoHist extends Model
         return $this->belongsTo(Acesso::class, 'id_acesso');
     }
 
-    public function colaborador()
+    public function user()
     {
-        return $this->belongsTo(Colaborador::class, 'id_colaborador');
+        return $this->belongsTo(User::class, 'id_user');
     }
 
 }

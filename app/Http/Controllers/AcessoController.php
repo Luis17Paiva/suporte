@@ -6,17 +6,18 @@ use App\Models\Acesso;
 use Illuminate\Support\Facades\DB;
 use App\Models\AcessoHist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AcessoController extends Controller
-{  
+{
     protected $acesso;
     protected $request;
     public function __construct(Acesso $acesso, Request $request)
     {
+        $this->middleware('auth');
         $this->acesso = $acesso;
         $this->request = $request;
-        $this->middleware('auth');
-    } 
+    }
     public function index()
     {
         $acessos = Acesso::all();
@@ -32,10 +33,10 @@ class AcessoController extends Controller
     public function store()
     {
         $acesso = new Acesso;
-        $acesso->empresa = $this->request->input('empresa');
-        $acesso->tipo_acesso = $this->request->input('tipo_acesso');
+        $acesso->id_cliente = $this->request->input('id_cliente');
+        $acesso->acesso_tipo = $this->request->input('acesso_tipo');
         $acesso->acesso_id = $this->request->input('acesso_id');
-        $acesso->senha =  $this->request->input('senha');
+        $acesso->acesso_pass =  $this->request->input('acesso_pass');
         $acesso->save();
 
         return redirect()->route('acessos')->with('success', 'Acesso adicionado com sucesso.');
@@ -52,26 +53,30 @@ class AcessoController extends Controller
     {
 
         $acesso = Acesso::findOrFail($id);
-        $acesso->empresa =  $this->request->input('empresa');
-        $acesso->tipo_acesso =  $this->request->input('tipo_acesso');
-        $acesso->acesso_id =  $this->request->input('acesso_id');
-        $acesso->senha =  $this->request->input('senha');
+        $acesso->id_cliente = $this->request->input('id_cliente');
+        $acesso->acesso_tipo = $this->request->input('acesso_tipo');
+        $acesso->acesso_id = $this->request->input('acesso_id');
+        $acesso->acesso_pass =  $this->request->input('acesso_pass');
         $acesso->save();
 
         return redirect()->route('acessos');
     }
 
     public function HistoricoAcessos($acessoId)
-    {   
-    
-        $startDate = $this->request->input('startDate');
-        $endDate =  $this->request->input('endDate');
-    
-        // Verificar se o acessoId é um número inteiro válido
-        if (!is_numeric($acessoId) || $acessoId <= 0) {
-            return response()->json(['message' => 'Acesso ID inválido']);
+    {
+        $validator = Validator::make($this->request->all(), [
+            'acessoId' => 'required|integer|min:1',
+            'startDate' => 'required|date',
+            'endDate' => 'required|date|after_or_equal:startDate',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 422);
         }
-    
+
+        $startDate = $this->request->input('startDate');
+        $endDate = $this->request->input('endDate');
+
         $data = DB::table('acesso_hist')
             ->where('acesso_id', $acessoId)
             ->whereBetween('created_at', [$startDate, $endDate])
@@ -88,13 +93,21 @@ class AcessoController extends Controller
 
     public function registrarAcesso($acessoId)
     {
-        $usuario = $this->request->user()->name;
+        $id_user = $this->request->user()->id;
 
+        $validator = Validator::make($this->request->all(), [
+            'acessoId' => 'required|integer|min:1',
+            'id_user' => ['required','integer']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 422);
+        }
         // Crie uma instância do modelo e preencha os dados
         $acessoHist = new AcessoHist([
-            'usuario' => $usuario,
+            'id_user' => $id_user,
             'acesso_id' => $acessoId,
-            
+
         ]);
 
         // Salve os dados no banco de dados

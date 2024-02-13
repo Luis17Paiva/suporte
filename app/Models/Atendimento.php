@@ -22,13 +22,13 @@ class Atendimento extends Model
         'hora_chamada',
         'hora_atendimento',
         'hora_desliga',
-        'id_colaborador',
+        'id_ramal',
         'id_asterisk',
         'excluido'
     ];
 
-    public function colaborador()
+    public function ramal()
     {
-        return $this->belongsTo(Colaborador::class, 'id_colaborador');
+        return $this->belongsTo(Ramal::class, 'id_ramal');
     }
 };

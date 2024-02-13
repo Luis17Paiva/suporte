@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_acesso')->constrained('acesso');
             $table->boolean('excluido')->default(false);
-            $table->foreignId('id_colaborador')->constrained('colaborador');
+            $table->foreignId('id_user')->constrained('user');
             $table->timestamps();
         });
     }

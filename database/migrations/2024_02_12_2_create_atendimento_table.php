@@ -17,7 +17,7 @@ return new class extends Migration
             $table->time('hora_chamada');
             $table->time('hora_atendimento')->nullable();
             $table->time('hora_desliga')->nullable();
-            $table->foreignId('id_colaborador')->constrained('colaborador');
+            $table->foreignId('id_ramal')->constrained('ramal');
             $table->string('id_asterisk', 50);
             $table->boolean('excluido')->default(false);
             $table->timestamps();
