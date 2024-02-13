@@ -16,13 +16,13 @@ class RamalController extends Controller
     }
     public function index()
     {
-        $Ramales = Ramal::all();
-        return view('ramal.ramal', compact('ramal'));
+        $ramais = Ramal::all();
+        return view('ramais/ramais', compact('ramais'));
     }
 
     public function create()
     {
-        return view('ramal.create');
+        return view('ramais/create');
     }
 
     public function store()
@@ -38,7 +38,7 @@ class RamalController extends Controller
     public function edit($id)
     {
         $ramal = Ramal::findOrFail($id);
-        return view('ramal.edit', compact('ramal'));
+        return view('ramais.edit', compact('ramal'));
     }
 
     public function update($id)

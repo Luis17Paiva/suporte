@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AtendimentoController;
-use App\Http\Controllers\ColaboradorController;
+use App\Http\Controllers\RamalController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\AcessoController;
 
@@ -23,11 +23,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [AtendimentoController::class, 'index'])->name('atendimentos');
         Route::get('/result', [AtendimentoController::class, 'result'])->name('atendimento.result');
     });
-    // Rotas para o ColaboradorController(GET)
-    Route::prefix('colaboradores')->group(function () {
-        Route::get('/', [ColaboradorController::class, 'index'])->name('colaboradores');
-        Route::get('/{id}/edit', [ColaboradorController::class, 'edit'])->name('colaboradores.edit');
-        Route::get('/create', [ColaboradorController::class, 'create'])->name('colaboradores.create');
+    // Rotas para o RamalController(GET)
+    Route::prefix('ramais')->group(function () {
+        Route::get('/', [RamalController::class, 'index'])->name('ramais');
+        Route::get('/{id}/edit', [RamalController::class, 'edit'])->name('ramal.edit');
+        Route::get('/create', [RamalController::class, 'create'])->name('ramal.create');
     });
     // Rotas para o RelatorioController(GET)
     Route::prefix('relatorios')->group(function () {
@@ -35,9 +35,9 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // -----------------------------ROTAS PUT--------------------------------
-    // Rotas para o ColaboradorController(PUT)
-    Route::prefix('colaboradores')->group(function () {
-        Route::put('/{id}', [ColaboradorController::class, 'update'])->name('colaboradores.update');
+    // Rotas para o RamalController(PUT)
+    Route::prefix('ramais')->group(function () {
+        Route::put('/{id}', [RamalController::class, 'update'])->name('ramal.update');
     });
 
     // -----------------------------ROTAS POST--------------------------------
@@ -47,9 +47,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/{id}', [AcessoController::class, 'update'])->name('acessos.update');
         Route::post('/registrar-acesso/{acessoId}', [AcessoController::class, 'registrarAcesso']);
     });
-    // Rotas para o ColaboradorController(POST)
-    Route::prefix('colaboradores')->group(function () {
-        Route::post('/store', [ColaboradorController::class, 'store'])->name('colaboradores.store');
+    // Rotas para o RamalController(POST)
+    Route::prefix('ramais')->group(function () {
+        Route::post('/store', [RamalController::class, 'store'])->name('ramal.store');
     });
     // Rotas para o RelatorioController(POST)
     Route::prefix('relatorios')->group(function () {

@@ -1,35 +1,35 @@
 @extends('sidebar/sidebar')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{{ asset('js/colaboradores/colaboradores.js') }}"></script>
-<link href="{{ asset('css/colaboradores/colaboradores.css') }}" rel="stylesheet">
+<script src="{{ asset('js/ramais/ramais.js') }}"></script>
+<link href="{{ asset('css/ramais/ramais.css') }}" rel="stylesheet">
 
 
 @section('content')
-    <title>Colaboradores</title>
+    <title>Ramais</title>
     <div class="box">
-        <h1 class="titulo">Colaboradores</h1>
+        <h1 class="titulo">Ramais</h1>
 
         <div class="button">
-            <a href="{{ route('colaboradores.create') }}">
+            <a href="{{ route('ramal.create') }}">
                 <i class='bx bx-add-to-queue icon'></i>
-                <span class="text1">Adicionar Colaborador</span>
+                <span class="text1">Adicionar ramal</span>
             </a>
         </div>
 
         <div class = "lista">
             <ul>
-                @foreach ($colaboradores as $colaborador)
+                @foreach ($ramais as $ramal)
                     <li>
                         <div>
-                            <div class="text1">Ramal: {{ $colaborador->id }}</div>
-                            <div class="text1">Colaborador: {{ $colaborador->nome }}</div>
+                            <div class="text1">Ramal: {{ $ramal->id }}</div>
+                            <div class="text1">ramal: {{ $ramal->nome }}</div>
                         </div>
                         <div>
-                            <div class="text1">Status: {{ $colaborador->excluido ? 'Excluído' : 'Ativo' }}</div>
+                            <div class="text1">Status: {{ $ramal->excluido ? 'Excluído' : 'Ativo' }}</div>
                         </div>
 
                         <div class="button">
-                            <a href="{{ route('colaboradores.edit', $colaborador->id) }}">
+                            <a href="{{ route('ramais.edit', $ramal->id) }}">
                                 <i class='bx bxs-edit icon'></i>
                                 <span class="text1">Editar</span>
                             </a>

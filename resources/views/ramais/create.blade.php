@@ -1,12 +1,12 @@
 @extends('sidebar/sidebar')
-<link href="{{ asset('css/colaboradores/create.css') }}" rel="stylesheet">
+<link href="{{ asset('css/ramais/create.css') }}" rel="stylesheet">
 
 @section('content')
-    <title>Adicionar colaborador</title>
+    <title>Adicionar ramal</title>
     <div class="box">
-        <h1>Adicionar colaborador</h1>
+        <h1>Adicionar ramal</h1>
 
-        <form action="{{ route('colaboradores.store') }}" method="POST">
+        <form action="{{ route('ramal.store') }}" method="POST">
             @csrf
             <div>
                 <div class="input-field">

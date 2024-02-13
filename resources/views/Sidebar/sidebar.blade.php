@@ -48,11 +48,11 @@
                             </a>
                         </li>
                     @endif
-                    @if (Route::has('colaboradores'))
-                        <li class="nav-link @if (request()->is('colaboradores')) active @endif">
-                            <a href="{{ route('colaboradores') }}">
+                    @if (Route::has('ramais'))
+                        <li class="nav-link @if (request()->is('ramais')) active @endif">
+                            <a href="{{ route('ramais') }}">
                                 <i class='bx bx-user icon'></i>
-                                <span class="text nav-text">Colaboradores</span>
+                                <span class="text nav-text">ramais</span>
                             </a>
                         </li>
                     @endif
