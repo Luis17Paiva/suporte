@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('atendimento', function (Blueprint $table) {
+        Schema::create('ligacao', function (Blueprint $table) {
             $table->id();
             $table->string('hash', 64);
             $table->string('numero', 25);
@@ -17,7 +17,7 @@ return new class extends Migration
             $table->time('hora_chamada');
             $table->time('hora_atendimento')->nullable();
             $table->time('hora_desliga')->nullable();
-            $table->foreignId('id_ramal')->constrained('ramal');
+            $table->integer('ramal');
             $table->string('id_asterisk', 50);
             $table->boolean('excluido')->default(false);
             $table->timestamps();
@@ -26,6 +26,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('atendimento');
+        Schema::dropIfExists('ligacao');
     }
 };
