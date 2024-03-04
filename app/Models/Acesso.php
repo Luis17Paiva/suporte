@@ -22,6 +22,11 @@ class Acesso extends Model
         'excluido' => 'boolean'
     ];
 
+    public function put($dados){
+
+        
+    }
+
     public function cliente()
     {
         return $this->belongsTo(Cliente::class, 'id_cliente');
